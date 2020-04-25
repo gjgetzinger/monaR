@@ -1,0 +1,18 @@
+Package: monaR
+Type: Package
+Title: Query the Mass Bank of North America API 
+Version: 0.1.0
+Author: Gordon Getzinger 
+Maintainer: Gordon Getzinger <gjg3@duke.edu>
+Description: Provides API wrapper functions for querying Mass Bank of North 
+    America. Structure identifiers or molecular properties can be used to 
+    search for records in MONA. Spectral similarity searching can be used 
+    to search by mass spectra with various limiters. 
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Imports: 
+    magrittr
+Suggests: 
+    testthat (>= 2.1.0)
