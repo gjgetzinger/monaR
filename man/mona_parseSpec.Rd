@@ -4,6 +4,8 @@
 \alias{mona_parseSpec}
 \alias{mona_parseSpec.character}
 \alias{mona_parseSpec.data.frame}
+\alias{mona_parseSpec.matrix}
+\alias{mona_parseSpec.Spectrum2}
 \title{Interchange between mass spectrum formats for MONA queries and results}
 \usage{
 mona_parseSpec(spec)
@@ -11,6 +13,10 @@ mona_parseSpec(spec)
 \method{mona_parseSpec}{character}(spec)
 
 \method{mona_parseSpec}{data.frame}(spec)
+
+\method{mona_parseSpec}{matrix}(spec)
+
+\method{mona_parseSpec}{Spectrum2}(spec)
 }
 \arguments{
 \item{spec}{A spectrum as either a character string of space deliminated
@@ -27,11 +33,9 @@ Interchange between mass spectrum formats for MONA queries and results
 \item \code{character}: Method for character strings
 
 \item \code{data.frame}: Method for data frames
+
+\item \code{matrix}: Method for matrix
+
+\item \code{Spectrum2}: Method for Spectrum2 objects from MSnbase
 }}
 
-\examples{
-
-mona_parseSpec("70.065:16.558562 84.0443:6.200376 86.0963:16.435100
-93.0697:3.403519 103.0541:4.278218 105.0697:10.396751 107.0854:23.813899")
-
-}

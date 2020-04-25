@@ -5,6 +5,13 @@
 #'
 #' @param query The query string
 #' @param from The query type (text, name, InChIKey or molform)
+#' @param mass_tol_Da Mass tolerance in Daltons for searching my molecular
+#'   weight.
+#' @param ionization The ionization mode (positive, negative, both)
+#' @param ms_level Which order of MS should be searched (all, MS1, MS2, MS3,
+#'   MS4).
+#' @param source_introduction Which instrument platforms should be considered
+#'   (all, LC-MS, GC-MS, CE-MS)
 #'
 #' @return A tibble containing the search results or NA if no matches.
 #' @export
@@ -13,7 +20,10 @@ mona_query <-
   function(query,
            from = c('text', 'name', 'InChIkey', 'molform'),
            mass_tol_Da = 0.1,
-           ionization = NULL) {
+           ionization = c('both', 'positive', 'negative'),
+           ms_level = c("all", "MS1", "MS2", "MS3", "MS4"),
+           source_introduction = c("all", "LC-MS", "GC-MS", "CE-MS")
+           ) {
     stopifnot(c(length(query) == 1, length(from) == 1))
     if (from == 'InChIKey') {
       stopifnot(nchar(query) %in% c(14, 27))
@@ -21,6 +31,18 @@ mona_query <-
         from <- 'partial_inchikey'
       }
     }
+    if (ionization == 'both') {
+      ionization <- c("positive", "negative")
+    }
+
+    if(ms_level == 'all'){
+      ms_level <- c("MS1", "MS2", "MS3", "MS4")
+    }
+
+    if(source_introduction == 'all'){
+      source_introduction <- c("LC-MS", "GC-MS", "CE-MS")
+    }
+
     if (from == 'mass') {
       mass_range <- query + c(-1, 1) * mass_tol_Da
     }
@@ -80,7 +102,7 @@ mona_query <-
     if (length(tags) > 0) {
       url <- paste(c(url, tags), collapse = ' and ')
     }
-    url <- URLencode(url)
+    url <- utils::URLencode(url)
 
     resp <- httr::GET(url = url, httr::timeout(getOption('timeout')))
 
@@ -99,7 +121,7 @@ mona_query <-
           query = query,
           from = from,
           tags = tags,
-          url = URLdecode(url),
+          url = utils::URLdecode(url),
           resp = resp
         )
       )
@@ -126,10 +148,8 @@ mona_querySpec <-
     stopifnot(!is.null(spectrum))
     url <-
       'https://mona.fiehnlab.ucdavis.edu/rest/similarity/search'
-    if (is.data.frame(spectrum)) {
-      spectrum <- mona_parseSpec(spec)
-    }
-    query <- list(spectrum = spectrum)
+
+    query <- list(spectrum = mona_parseSpec(spectrum))
 
     if (!is.null(minSimilarity)) {
       query['minSimiliarity'] <- minSimilarity
@@ -148,20 +168,19 @@ mona_querySpec <-
       query['precursorToleranceDa'] <- precursorToleranceDa
     }
 
-
     query <- jsonlite::toJSON(query, auto_unbox = T)
-
 
     resp <-
       httr::POST(
         url,
         body = query,
         httr::accept_json(),
-        htttr::content_type_json(),
+        httr::content_type_json(),
         httr::timeout(getOption('timeout'))
       )
 
     httr::stop_for_status(resp)
+
     if (resp$status_code == 200) {
       cont <- httr::content(resp, "text")
       parsed <- dplyr::as_tibble(jsonlite::fromJSON(cont))
@@ -173,7 +192,7 @@ mona_querySpec <-
       append(attributes(parsed),
              list(
                query = query,
-               url = URLdecode(url),
+               url = utils::URLdecode(url),
                resp = resp
              ))
     return(parsed)
@@ -195,11 +214,11 @@ mona_parseSpec <- function(spec) {
 mona_parseSpec.character <- function(spec) {
   tryCatch(
     spec %>%
-      stringr::str_split(., '[:space:]') %>%
+      stringr::str_split(.data, '[:space:]') %>%
       unlist %>%
-      stringr::str_split(., ":") %>%
-      do.call('rbind', .) %>%
-      matrix(., ncol = 2, dimnames = list(c(), c("mz", "intensity"))) %>%
+      stringr::str_split(.data, ":") %>%
+      do.call('rbind', .data) %>%
+      matrix(.data, ncol = 2, dimnames = list(c(), c("mz", "intensity"))) %>%
       dplyr::as_tibble() %>%
       dplyr::mutate_all(as.numeric),
     error = function(e) {
@@ -210,14 +229,41 @@ mona_parseSpec.character <- function(spec) {
 
 #' @describeIn mona_parseSpec Method for data frames
 mona_parseSpec.data.frame <- function(spec) {
-  stopifnot(names(spec) %in% c('mz', 'intensity'))
+  stopifnot('mz' %in% names(spec) & ('intensity' %in% names(spec) | 'into' %in% names(spec)))
   tryCatch(
-    select(spec, mz, intensity) %>%
-      apply(., 1, paste, collapse = ":") %>%
-      paste(., collapse = ' '),
+    dplyr::as_tibble(spec) %>%
+      dplyr::rename_all(list(~gsub('into', 'intensity', .))) %>%
+      dplyr::select(`mz`, `intensity`) %>%
+      apply(.data, 1, paste, collapse = ":") %>%
+      paste(.data, collapse = ' '),
     error = function(e) {
       NA
     }
   )
 }
 
+#' @describeIn mona_parseSpec Method for matrix
+mona_parseSpec.matrix <- function(spec) {
+  stopifnot(ncol(spec) == 2)
+  tryCatch(
+    dplyr::tibble(spec) %>%
+      apply(.data, 1, paste, collapse = ":") %>%
+      paste(.data, collapse = ' '),
+    error = function(e) {
+      NA
+    }
+  )
+}
+
+#' @describeIn mona_parseSpec Method for Spectrum2 objects from MSnbase
+mona_parseSpec.Spectrum2 <- function(spec){
+  stopifnot(c("mz", "intensity") %in% names(attributes(spec)))
+  tryCatch(
+    dplyr::tibble(mz = spec@mz, intensity = spec@intensity) %>%
+      apply(.data, 1, paste, collapse = ":") %>%
+      paste(.data, collapse = ' '),
+    error = function(e) {
+      NA
+    }
+  )
+}

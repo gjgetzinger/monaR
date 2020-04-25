@@ -9,3 +9,11 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+#' .data
+#' @keywords internal
+#' @export
+#' @importFrom rlang .data
+NULL
+
+utils::globalVariables(c("mz", "intensity", "."))

@@ -8,13 +8,26 @@ mona_query(
   query,
   from = c("text", "name", "InChIkey", "molform"),
   mass_tol_Da = 0.1,
-  ionization = NULL
+  ionization = c("both", "positive", "negative"),
+  ms_level = c("all", "MS1", "MS2", "MS3", "MS4"),
+  source_introduction = c("all", "LC-MS", "GC-MS", "CE-MS")
 )
 }
 \arguments{
 \item{query}{The query string}
 
 \item{from}{The query type (text, name, InChIKey or molform)}
+
+\item{mass_tol_Da}{Mass tolerance in Daltons for searching my molecular
+weight.}
+
+\item{ionization}{The ionization mode (positive, negative, both)}
+
+\item{ms_level}{Which order of MS should be searched (all, MS1, MS2, MS3,
+MS4).}
+
+\item{source_introduction}{Which instrument platforms should be considered
+(all, LC-MS, GC-MS, CE-MS)}
 }
 \value{
 A tibble containing the search results or NA if no matches.

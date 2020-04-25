@@ -8,11 +8,22 @@ Description: Provides API wrapper functions for querying Mass Bank of North
     America. Structure identifiers or molecular properties can be used to 
     search for records in MONA. Spectral similarity searching can be used 
     to search by mass spectra with various limiters. 
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
 Imports: 
-    magrittr
+    magrittr,
+    dplyr,
+    httr,
+    jsonlite,
+    readr,
+    stringr,
+    usethis,
+    utils,
+    rlang
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
