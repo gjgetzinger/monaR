@@ -10,10 +10,15 @@
 #' @usage lhs \%>\% rhs
 NULL
 
-#' .data
+#' Data pronouns for tidy evaluation
+#'
+#' @name .data
+#' @rdname .data
 #' @keywords internal
 #' @export
 #' @importFrom rlang .data
+#'
 NULL
+
 
 utils::globalVariables(c("mz", "intensity", "."))

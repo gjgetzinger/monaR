@@ -6,11 +6,11 @@
 \usage{
 mona_query(
   query,
-  from = c("text", "name", "InChIkey", "molform"),
+  from = c("text", "name", "InChIKey", "molform", "mass"),
   mass_tol_Da = 0.1,
-  ionization = c("both", "positive", "negative"),
-  ms_level = c("all", "MS1", "MS2", "MS3", "MS4"),
-  source_introduction = c("all", "LC-MS", "GC-MS", "CE-MS")
+  ionization = c("positive", "negative"),
+  ms_level = c("MS1", "MS2", "MS3", "MS4"),
+  source_introduction = c("LC-MS", "GC-MS", "CE-MS")
 )
 }
 \arguments{

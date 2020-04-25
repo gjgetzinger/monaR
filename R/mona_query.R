@@ -18,29 +18,28 @@
 #'
 mona_query <-
   function(query,
-           from = c('text', 'name', 'InChIkey', 'molform'),
+           from = c('text', 'name', 'InChIKey', 'molform', 'mass'),
            mass_tol_Da = 0.1,
-           ionization = c('both', 'positive', 'negative'),
-           ms_level = c("all", "MS1", "MS2", "MS3", "MS4"),
-           source_introduction = c("all", "LC-MS", "GC-MS", "CE-MS")
+           ionization = c('positive', 'negative'),
+           ms_level = c("MS1", "MS2", "MS3", "MS4"),
+           source_introduction = c("LC-MS", "GC-MS", "CE-MS")
            ) {
+    # from <- match.arg(from, c('text', 'name', 'InChIKey', 'molform', 'mass'), several.ok = F)
+    # ionization <- match.arg(ionization,c('positive', 'negative'), several.ok = T)
+    # ms_level <- match.arg(ms_level,c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
+    # source_introduction <- match.arg(source_introduction, c("LC-MS", "GC-MS", "CE-MS"), several.ok = T)
+    from <- match.arg(from, several.ok = F)
+    ionization <- match.arg(ionization, several.ok = T)
+    ms_level <- match.arg(ms_level, several.ok = T)
+    source_introduction <- match.arg(source_introduction, several.ok = T)
+
     stopifnot(c(length(query) == 1, length(from) == 1))
+
     if (from == 'InChIKey') {
       stopifnot(nchar(query) %in% c(14, 27))
       if (nchar(query) == 14) {
         from <- 'partial_inchikey'
       }
-    }
-    if (ionization == 'both') {
-      ionization <- c("positive", "negative")
-    }
-
-    if(ms_level == 'all'){
-      ms_level <- c("MS1", "MS2", "MS3", "MS4")
-    }
-
-    if(source_introduction == 'all'){
-      source_introduction <- c("LC-MS", "GC-MS", "CE-MS")
     }
 
     if (from == 'mass') {
@@ -73,35 +72,27 @@ mona_query <-
 
     tags <- list()
     # add ionization to query
-    if (!is.null(ionization)) {
-      stopifnot(ionization %in% c('positive', 'negative'))
-      tags['ionization'] <- paste0('(', paste(
-        sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
-        collapse = ' or '
-      ), ')')
-    }
+    tags['ionization'] <- paste0('(', paste(
+      sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
+      collapse = ' or '
+    ), ')')
 
     # add ms level
-    if (!is.null(ms_level)) {
-      stopifnot(ms_level %in% c("MS1", "MS2", "MS3", "MS4"))
-      tags['ms_level'] <- paste0('(', paste(
-        sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
-        collapse = ' or '
-      ), ')')
-    }
+    tags['ms_level'] <- paste0('(', paste(
+      sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
+      collapse = ' or '
+    ), ')')
 
     # add source introduction
-    if (!is.null(source_introduction)) {
-      stopifnot(source_introduction %in% c("LC-MS", "GC-MS", "CE-MS"))
-      tags['source_introduction'] <- paste0('(', paste(
-        sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
-        collapse = ' or '
-      ), ')')
-    }
+    tags['source_introduction'] <- paste0('(', paste(
+      sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
+      collapse = ' or '
+    ), ')')
 
     if (length(tags) > 0) {
       url <- paste(c(url, tags), collapse = ' and ')
     }
+
     url <- utils::URLencode(url)
 
     resp <- httr::GET(url = url, httr::timeout(getOption('timeout')))
@@ -149,7 +140,9 @@ mona_querySpec <-
     url <-
       'https://mona.fiehnlab.ucdavis.edu/rest/similarity/search'
 
-    query <- list(spectrum = mona_parseSpec(spectrum))
+    spectrum <- mona_parseSpec(spectrum)
+
+    query <- list(spectrum = spectrum)
 
     if (!is.null(minSimilarity)) {
       query['minSimiliarity'] <- minSimilarity
@@ -212,58 +205,50 @@ mona_parseSpec <- function(spec) {
 
 #' @describeIn mona_parseSpec Method for character strings
 mona_parseSpec.character <- function(spec) {
-  tryCatch(
-    spec %>%
-      stringr::str_split(.data, '[:space:]') %>%
-      unlist %>%
-      stringr::str_split(.data, ":") %>%
-      do.call('rbind', .data) %>%
-      matrix(.data, ncol = 2, dimnames = list(c(), c("mz", "intensity"))) %>%
-      dplyr::as_tibble() %>%
-      dplyr::mutate_all(as.numeric),
-    error = function(e) {
-      NA
-    }
-  )
+  spec %>%
+    stringr::str_split(.data, '[:space:]') %>%
+    unlist %>%
+    stringr::str_split(.data, ":") %>%
+    do.call('rbind', .data) %>%
+    matrix(.data, ncol = 2, dimnames = list(c(), c("mz", "intensity"))) %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate_all(as.numeric)
 }
 
 #' @describeIn mona_parseSpec Method for data frames
 mona_parseSpec.data.frame <- function(spec) {
-  stopifnot('mz' %in% names(spec) & ('intensity' %in% names(spec) | 'into' %in% names(spec)))
-  tryCatch(
-    dplyr::as_tibble(spec) %>%
-      dplyr::rename_all(list(~gsub('into', 'intensity', .))) %>%
-      dplyr::select(`mz`, `intensity`) %>%
-      apply(.data, 1, paste, collapse = ":") %>%
-      paste(.data, collapse = ' '),
-    error = function(e) {
-      NA
-    }
-  )
+  stopifnot('mz' %in% names(spec) &
+              ('intensity' %in% names(spec) | 'into' %in% names(spec)))
+  dplyr::as_tibble(spec) %>%
+    dplyr::rename_all(list( ~ gsub('into', 'intensity', .))) %>%
+    dplyr::select(`mz`, `intensity`) %>%
+    dplyr::mutate_all(as.numeric) %>%
+    apply(.data,
+          MARGIN = 1,
+          FUN = paste0,
+          collapse = ":") %>%
+    paste0(.data, collapse = ' ')
 }
 
 #' @describeIn mona_parseSpec Method for matrix
 mona_parseSpec.matrix <- function(spec) {
   stopifnot(ncol(spec) == 2)
-  tryCatch(
-    dplyr::tibble(spec) %>%
-      apply(.data, 1, paste, collapse = ":") %>%
-      paste(.data, collapse = ' '),
-    error = function(e) {
-      NA
-    }
-  )
+  dplyr::tibble(spec) %>%
+    apply(.data,
+          MARGIN = 1,
+          FUN = paste0,
+          collapse = ":") %>%
+    paste0(.data, collapse = ' ')
 }
 
 #' @describeIn mona_parseSpec Method for Spectrum2 objects from MSnbase
-mona_parseSpec.Spectrum2 <- function(spec){
+mona_parseSpec.Spectrum2 <- function(spec) {
   stopifnot(c("mz", "intensity") %in% names(attributes(spec)))
-  tryCatch(
-    dplyr::tibble(mz = spec@mz, intensity = spec@intensity) %>%
-      apply(.data, 1, paste, collapse = ":") %>%
-      paste(.data, collapse = ' '),
-    error = function(e) {
-      NA
-    }
-  )
+  dplyr::tibble(mz = spec@mz, intensity = spec@intensity) %>%
+    apply(.data,
+          MARGIN = 1,
+          FUN = paste0,
+          collapse = ":") %>%
+    paste0(.data, collapse = ' ')
 }
+
