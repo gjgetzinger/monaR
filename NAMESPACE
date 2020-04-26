@@ -2,6 +2,7 @@
 
 export("%>%")
 export(.data)
+export(mona_identifiers)
 export(mona_parseSpec)
 export(mona_query)
 export(mona_querySpec)

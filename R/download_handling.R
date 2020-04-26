@@ -3,6 +3,7 @@
 #' @param update (T/F) should the file be downloaded
 #'
 #' @return Saves table as an R-object
+#' @export
 #'
 mona_identifiers <- function(update = F) {
   if (update) {
