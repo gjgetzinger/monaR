@@ -12,6 +12,14 @@
 #'
 "atrazine_ms2"
 
+#' Example mona_query results
+#'
+#' An example result generated from mona_query('atrazine', 'name')
+#'
+#' @format tibble with 178 rows and 13 variables
+#'
+"example_id_query"
+
 #' Pipe operator
 #'
 #' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.

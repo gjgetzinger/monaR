@@ -63,10 +63,9 @@ mona_querySpec <-
     attributes(parsed) <-
       append(attributes(parsed),
              list(
-               query = query,
-               url = utils::URLdecode(url),
-               resp = resp
+               query = query
              ))
+    class(parsed) <- append(class(parsed), 'mona_spec_query')
     return(parsed)
   }
 

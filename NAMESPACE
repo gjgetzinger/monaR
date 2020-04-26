@@ -2,6 +2,9 @@
 
 export("%>%")
 export(.data)
+export(mona_extract)
+export(mona_getChem)
+export(mona_getMeta)
 export(mona_identifiers)
 export(mona_parseSpec)
 export(mona_query)

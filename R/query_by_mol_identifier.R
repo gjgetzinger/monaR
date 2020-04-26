@@ -106,11 +106,10 @@ mona_query <-
         attributes(parsed),
         list(
           query = query,
-          from = from,
-          tags = tags,
-          url = utils::URLdecode(url),
-          resp = resp
+          from = from
         )
       )
+    class(parsed) <- append(class(parsed), 'mona_id_query')
     return(parsed)
   }
+
