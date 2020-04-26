@@ -24,10 +24,6 @@ mona_query <-
            ms_level = c("MS1", "MS2", "MS3", "MS4"),
            source_introduction = c("LC-MS", "GC-MS", "CE-MS")
            ) {
-    # from <- match.arg(from, c('text', 'name', 'InChIKey', 'molform', 'mass'), several.ok = F)
-    # ionization <- match.arg(ionization,c('positive', 'negative'), several.ok = T)
-    # ms_level <- match.arg(ms_level,c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
-    # source_introduction <- match.arg(source_introduction, c("LC-MS", "GC-MS", "CE-MS"), several.ok = T)
     from <- match.arg(from, several.ok = F)
     ionization <- match.arg(ionization, several.ok = T)
     ms_level <- match.arg(ms_level, several.ok = T)
