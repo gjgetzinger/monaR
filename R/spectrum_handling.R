@@ -12,13 +12,15 @@ mona_parseSpec <- function(spec) {
 
 #' @describeIn mona_parseSpec Method for character strings
 mona_parseSpec.character <- function(spec) {
-  stringr::str_split(spec, '[:space:]') %>%
+  a <- stringr::str_split(spec, '[:space:]') %>%
     unlist %>%
     stringr::str_split(., ":") %>%
     do.call('rbind', .) %>%
     matrix(., ncol = 2, dimnames = list(c(), c("mz", "intensity"))) %>%
     dplyr::as_tibble() %>%
     dplyr::mutate_all(as.numeric)
+  class(a) <- append(class(a), 'mass_spectrum')
+  return(a)
 }
 
 #' @describeIn mona_parseSpec Method for data frames
