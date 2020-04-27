@@ -28,8 +28,15 @@ mona_getMeta(df, var, value)
     "mass accuracy", "mass error")
 )
 }
+\arguments{
+\item{df}{Query result}
+
+\item{var}{variable to select/filter by}
+
+\item{value}{value to return}
+}
 \value{
-A tibble with columns id, value
+a tibble
 }
 \description{
 Extract values from meta data records retrieved from MONA queries
@@ -42,12 +49,14 @@ Extract values from meta data records retrieved from MONA queries
 }}
 
 \examples{
+\dontrun{
 mona_getMeta(example_id_query, var = 'category', value = 'mass spectrometry')
 mona_getMeta(example_id_query, var = 'category', value = 'focused ion')
 mona_getMeta(example_id_query, var = 'category', value = 'chromatography')
 mona_getMeta(example_id_query, var = 'name', value = 'ionization')
 mona_getMeta(example_id_query, var = 'name', value = 'ms level')
 mona_getMeta(example_id_query, var = 'name', value = 'mass error')
+}
 mona_getMeta(example_spec_query, var = 'category', value = 'mass spectrometry')
 mona_getMeta(example_spec_query, var = 'category', value = 'chromatography')
 mona_getMeta(example_spec_query, var = 'name', value = 'mass error')

@@ -1,0 +1,209 @@
+---
+title: "Querying the Mass Bank of North America API with monaR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Querying the Mass Bank of North America API with monaR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(monaR)
+```
+
+# Introduction
+Mass Bank of North America (MoNA) is a mass spectrometry resources desinged for the storage and querying of tandem mass spectral data from small organic molecules. This valuable resource is maintained by the Fiehn Lab at UC Davis. To get more information about MoNA, please visit [https://mona.fiehnlab.ucdavis.edu](https://mona.fiehnlab.ucdavis.edu). 
+
+MoNA provides a REST API for programatic queries. This package provides wrapper functions for using the MoNA API from R. 
+
+# Queries 
+Two types of queries are supported. First, molecular identifiers can be used to query record meta data for potential matching compound. Second, spectral similarity searching can be used to return records from similar spectra stored in MoNA. 
+
+## Query by molecular or structure identifier 
+Querying by identifier takes at mininum two inputs: `query` and `from`. The `query` argument is a molecular identifier while `from` indicates how the type of identifier used. 
+
+### Query by text string 
+Take for instance we want to search for the chemical Microcystin-LR by its abbreviation, MCLR. 
+```{r, eval = F}
+mona_query(query = 'MCLR', from = 'text')
+```
+
+### Query by chemical name 
+Alternatively, we can search by name. 
+```{r, eval=F}
+mona_query(query = 'Microcystin-LR', from = 'name')
+```
+
+### Query by InChI Key 
+Since names and abbreviations are not standardized, it is useful to be able to query by a unique identifier related to the target chemicals structure. The ideal identifier for this purpose is the International Chemical Identifier (InChI) in hashed form, which is also known as an InChI Key. The InChI Key encodes all the structural information (type, position and arrangement of elements in a molecule) in a 27-digit string. 
+
+```{r, eval = F}
+mona_query(query = 'ZYZCGGRZINLQBL-JCGNTXOTSA-N', from = 'InChIKey')
+```
+
+In instances where the target molecule has several stereo isomers, all isomer matches can be retrieved by queyring by the connectivity part of the InChI Key alone, which is encoded in the first 14 character. 
+
+```{r, eval = F}
+mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey')
+```
+
+### Query by molecular formula 
+To retrieve all the extant structural isomers molecule, we can search by molecular formula. 
+
+```{r, eval = F}
+mona_query(query = 'C49H74N10O12', from = 'molform')
+```
+
+### Query by exact mass 
+Alternatively the exact mass can be used. 
+```{r, eval = F}
+mona_query(query = 994.5488, from = 'mass')
+```
+
+### Additional search parameters 
+Queries can be further constrained to specific types of spectra by passing arguments to `ionization`, `ms_level`, and `source_introduction`. When searching by exact mass, `mass_tol_Da` designates the allowed mass error in Daltons. 
+
+To search only for MS^2^ spectra
+```{r, eval = F}
+mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey', ms_level = 'MS2')
+```
+
+To search for MS^2^ spectra only in positive ion mode collected on an LC-MS instrument 
+```{r, eval = F}
+mona_query(
+  query = 'ZYZCGGRZINLQBL',
+  from = 'InChIKey',
+  ms_level = 'MS2',
+  ionization = 'positive',
+  source_introduction = 'LC-MS)
+```
+
+## Query by mass spectrum 
+Spectral library searching, using tandem mass spectrometry data, is useful for annotating the structure of unknown chemicals detected by mass spectrometry. MoNA queries by mass spectra return similar spectra, along with their associated chemical information. 
+
+Spectra can be provided as a `data.frame` or `matrix`. For example:
+```{r}
+atrazine_ms2
+```
+
+```{r, eval=F}
+mona_querySpec(spectrum = atrazine_ms2)
+```
+
+Additional limiters can be provided by designating a minimum spectral similarity threshold (`minSimilarity`) and the mass-to-charge of the precursor ion (`precursorMZ`). When `precursorMZ` is provided, the allowed mass error should be designated in Daltons (`precursorToleranceDa`) or parts-per-million (ppm, `precursorTolerancePPM`). 
+
+```{r, eval = F}
+mona_querySpec(
+  spectrum = atrazine_ms2,
+  minSimilarity = 800,
+  precursorMZ = 216,
+  precursorToleranceDa = 1
+)
+```
+
+# Working with results 
+Queries to MoNA return all results a single tibble. Various helper functions are provided for accessing the various parts of the query results. Query results consist of meta data that describes the experimetnal conditions that the library spectra were acquired under, chemical information in the form of structural and molecular representations and identifiers, and spectral data. 
+## Getting meta data 
+Various aspects of the meta data can be extracted from identifier and spectra queries. 
+### Identifier queries 
+```{r, include=F, eval=T}
+id_query_rst <- example_id_query
+spec_query_rst <- example_spec_query
+```
+
+```{r, eval=F}
+id_query_rst <- mona_query('atrazine', 'name')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'category', value = 'mass spectrometry')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'category', value = 'focused ion')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'category', value = 'chromatography')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'name', value = 'ionization')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'name', value = 'ms level')
+```
+
+```{r, eval = F}
+mona_getMeta(id_query_rst, var = 'name', value = 'mass error')
+```
+### Spectrum queries 
+```{r, eval=F}
+spec_query_rst <-
+  mona_querySpec(
+    spectrum = atrazine_ms2,
+    minSimilarity = 800,
+    precursorMZ = 216,
+    precursorToleranceDa = 1
+  ))
+```
+```{r, eval = F}
+mona_getMeta(spec_query_rst, var = 'category', value = 'mass spectrometry')
+```
+
+```{r, eval = F}
+mona_getMeta(spec_query_rst, var = 'category', value = 'chromatography')
+```
+
+```{r, eval = F}
+mona_getMeta(spec_query_rst, var = 'name', value = 'mass error')
+```
+
+## Getting chemical data 
+
+```{r, eval = F}
+mona_getChem(id_query_rst, var = 'inchi')
+```
+
+```{r, eval = F}
+mona_getChem(spec_query_rst, var = 'inchiKey')
+```
+
+```{r, eval = F}
+mona_getChem(id_query_rst, var = 'external id')
+```
+
+```{r, eval = F}
+mona_getChem(spec_query_rst, var = 'external id')
+```
+
+## Getting spectral data 
+Spectral data is pulled from query results into a list named by spectrum ID. 
+
+```{r, eval = F}
+mona_getSpec(slice(id_query_rst,1))
+```
+```{r, eval = F}
+mona_getSpec(slice(spec_query_rst, 1))
+```
+```{r, eval = F}
+mona_getSpec(filter(spec_query_rst, spec_query_rst$hit$id == 'SM841401'))
+```
+```{r, eval = F}
+mona_getSpec(filter(spec_query_rst,spec_query_rst$score > 0.8))
+```
+When peak annotations are provided, they can be merged with the spectra using the `ann` argument. 
+```{r, eval = F}
+mona_getSpec(slice(id_query_rst,150), ann = TRUE)
+```
+```{r, eval = F}
+mona_getSpec(slice(spec_query_rst, 1), ann = TRUE)
+```

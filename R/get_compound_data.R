@@ -1,18 +1,22 @@
 #' Extract chemical data from MONA queries
 #'
-#' @return A tibble with columns id, value
-#' @export
+#' @param df A tibble returned by a MoNA query
+#' @param var The variable to return from the meta data
 #'
-#' @examples
-#' mona_getChem(example_id_query, var = 'inchi')
-#' mona_getChem(example_id_query, var = 'inchiKey')
-#' mona_getChem(example_id_query, var = 'external id')
+#' @return a tibble containing extracted chemical data
+#' @export
 #'
 mona_getChem <- function(df, var) {
   UseMethod('mona_getChem')
 }
 
 #' @describeIn mona_getChem Get values from meta data from ID query
+#' @export
+#' @examples
+#' mona_getChem(example_id_query, var = 'inchi')
+#' mona_getChem(example_id_query, var = 'inchiKey')
+#' mona_getChem(example_id_query, var = 'external id')
+#'
 mona_getChem.mona_id_query <-
   function(df,
            var = c(
@@ -84,6 +88,8 @@ mona_getChem.mona_id_query <-
   }
 
 #' @describeIn mona_getChem Extract meta data from spectrum queries
+#' @export
+#'
 mona_getChem.mona_spec_query <-  function(df,
                                           var = c(
                                             'inchi',

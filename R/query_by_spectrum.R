@@ -6,7 +6,7 @@
 #' @param precursorToleranceDa Search tolerance in dalton
 #' @param precursorTolerancePPM Search tolerance in ppm
 #'
-#' @return A tibble containing the search results of NA if an error occured.
+#' @return a tibble containing query results
 #' @export
 #'
 mona_querySpec <-
@@ -65,7 +65,7 @@ mona_querySpec <-
              list(
                query = query
              ))
-    class(parsed) <- append(class(parsed), 'mona_spec_query')
+    class(parsed) <- append('mona_spec_query', class(parsed))
     return(parsed)
   }
 

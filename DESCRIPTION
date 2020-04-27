@@ -22,9 +22,15 @@ Imports:
     stringr,
     usethis,
     utils,
-    rlang
+    rlang,
+    tibble, 
+    tidyr, 
+    purrr, 
+    plyr
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    spelling
 VignetteBuilder: knitr
+Language: en-US

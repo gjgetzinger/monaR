@@ -13,7 +13,7 @@
 #' @param source_introduction Which instrument platforms should be considered
 #'   (all, LC-MS, GC-MS, CE-MS)
 #'
-#' @return A tibble containing the search results or NA if no matches.
+#' @return a [tibble][tibble::tibble-package]
 #' @export
 #'
 mona_query <-
@@ -22,13 +22,11 @@ mona_query <-
            mass_tol_Da = NULL,
            ionization = NULL,
            ms_level = NULL,
-           source_introduction = NULL
-  ) {
-    from <- match.arg(from, c('text', 'name', 'InChIKey', 'molform', 'mass'), several.ok = F)
-    ionization <- match.arg(ionization, c('positive', 'negative'), several.ok = T)
-    ms_level <- match.arg(ms_level, c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
-    source_introduction <- match.arg(source_introduction, c("LC-MS", "GC-MS", "CE-MS"), several.ok = T)
-
+           source_introduction = NULL) {
+    from <-
+      match.arg(from,
+                c('text', 'name', 'InChIKey', 'molform', 'mass'),
+                several.ok = F)
     stopifnot(c(length(query) == 1, length(from) == 1))
 
     if (from == 'InChIKey') {
@@ -68,7 +66,9 @@ mona_query <-
 
     tags <- list()
     # add ionization to query
-    if(!is.null(ionization)){
+    if (!is.null(ionization)) {
+      ionization <-
+        match.arg(ionization, c('positive', 'negative'), several.ok = T)
       tags['ionization'] <- paste0('(', paste(
         sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
         collapse = ' or '
@@ -76,7 +76,9 @@ mona_query <-
     }
 
     # add ms level
-    if(!is.null(ms_level)){
+    if (!is.null(ms_level)) {
+      ms_level <-
+        match.arg(ms_level, c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
       tags['ms_level'] <- paste0('(', paste(
         sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
         collapse = ' or '
@@ -84,7 +86,11 @@ mona_query <-
     }
 
     # add source introduction
-    if(!is.null(source_introduction)){
+    if (!is.null(source_introduction)) {
+      source_introduction <-
+        match.arg(source_introduction,
+                  c("LC-MS", "GC-MS", "CE-MS"),
+                  several.ok = T)
       tags['source_introduction'] <- paste0('(', paste(
         sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
         collapse = ' or '
@@ -99,8 +105,6 @@ mona_query <-
 
     resp <- httr::GET(url = url)
 
-    httr::stop_for_status(resp)
-
     if (resp$status_code == 200) {
       cont <- httr::content(resp, "text")
       parsed <- dplyr::as_tibble(jsonlite::fromJSON(cont))
@@ -108,14 +112,9 @@ mona_query <-
       parsed <- NA
     }
     attributes(parsed) <-
-      append(
-        attributes(parsed),
-        list(
-          query = query,
-          from = from
-        )
-      )
-    class(parsed) <- append(class(parsed), 'mona_id_query')
+      append(attributes(parsed),
+             list(query = query,
+                  from = from))
+    class(parsed) <- append('mona_id_query', class(parsed))
     return(parsed)
   }
-

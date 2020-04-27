@@ -24,7 +24,7 @@ mona_querySpec(
 \item{precursorTolerancePPM}{Search tolerance in ppm}
 }
 \value{
-A tibble containing the search results of NA if an error occured.
+a tibble containing query results
 }
 \description{
 Query MONA API by a mass spectrum

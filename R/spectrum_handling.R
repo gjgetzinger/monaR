@@ -11,6 +11,7 @@ mona_parseSpec <- function(spec) {
 }
 
 #' @describeIn mona_parseSpec Method for character strings
+#' @export
 mona_parseSpec.character <- function(spec) {
   a <- stringr::str_split(spec, '[:space:]') %>%
     unlist %>%
@@ -24,6 +25,7 @@ mona_parseSpec.character <- function(spec) {
 }
 
 #' @describeIn mona_parseSpec Method for data frames
+#' @export
 mona_parseSpec.data.frame <- function(spec) {
   stopifnot('mz' %in% names(spec) &
               ('intensity' %in% names(spec) | 'into' %in% names(spec)))
@@ -39,6 +41,7 @@ mona_parseSpec.data.frame <- function(spec) {
 }
 
 #' @describeIn mona_parseSpec Method for matrix
+#' @export
 mona_parseSpec.matrix <- function(spec) {
   stopifnot(ncol(spec) == 2)
   dplyr::tibble(spec) %>%
@@ -50,6 +53,7 @@ mona_parseSpec.matrix <- function(spec) {
 }
 
 #' @describeIn mona_parseSpec Method for Spectrum2 objects from MSnbase
+#' @export
 mona_parseSpec.Spectrum2 <- function(spec) {
   stopifnot(c("mz", "intensity") %in% names(attributes(spec)))
   dplyr::tibble(mz = spec@mz, intensity = spec@intensity) %>%
@@ -69,20 +73,17 @@ mona_parseSpec.Spectrum2 <- function(spec) {
 #' @return A list of spectra named with the spectrum id
 #' @export
 #'
-#' @examples
-#' mona_getSpec(slice(example_id_query,1))
-#' mona_getSpec(slice(example_spec_query, 1))
-#' mona_getSpec(filter(example_spec_query, example_spec_query$hit$id == 'SM841401'))
-#' mona_getSpec(filter(example_spec_query,example_spec_query$score > 0.8))
-#' mona_getSpec(slice(example_id_query,150), ann = T)
-#' mona_getSpec(slice(example_spec_query, 1), ann = T)
-#'
-mona_getSpec <- function(df, ann = F){
+mona_getSpec <- function(df, ann = FALSE){
   UseMethod("mona_getSpec")
 }
 
 #' @describeIn mona_getSpec Extract spectrum from ID query
-mona_getSpec.mona_id_query <- function(df, ann = F) {
+#' @export
+#' @examples
+#' mona_getSpec(dplyr::slice(example_id_query,1))
+#' mona_getSpec(dplyr::slice(example_id_query,150), ann = TRUE)
+#'
+mona_getSpec.mona_id_query <- function(df, ann = FALSE) {
   spec <- setNames(map(df$spectrum, mona_parseSpec), df$id)
   if (ann) {
     setNames(lapply(1:length(spec), function(x) {
@@ -104,7 +105,14 @@ mona_getSpec.mona_id_query <- function(df, ann = F) {
 }
 
 #' @describeIn mona_getSpec Extract spectra from spectrum query
-mona_getSpec.mona_spec_query <- function(df, ann = F) {
+#' @export
+#' @examples
+#' mona_getSpec(dplyr::slice(example_spec_query, 1))
+#' mona_getSpec(dplyr::filter(example_spec_query, example_spec_query$hit$id == 'SM841401'))
+#' mona_getSpec(dplyr::filter(example_spec_query,example_spec_query$score > 0.8))
+#' mona_getSpec(dplyr::slice(example_spec_query, 1), ann = TRUE)
+#'
+mona_getSpec.mona_spec_query <- function(df, ann = FALSE) {
   spec <- setNames(map(df$hit$spectrum, mona_parseSpec), df$hit$id)
   if (ann) {
     setNames(lapply(1:length(spec), function(x) {

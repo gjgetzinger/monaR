@@ -1,24 +1,28 @@
 #' Extract values from meta data records retrieved from MONA queries
 #'
-#' @return A tibble with columns id, value
-#' @export
+#' @param df Query result
+#' @param var variable to select/filter by
+#' @param value value to return
 #'
-#' @examples
-#' mona_getMeta(example_id_query, var = 'category', value = 'mass spectrometry')
-#' mona_getMeta(example_id_query, var = 'category', value = 'focused ion')
-#' mona_getMeta(example_id_query, var = 'category', value = 'chromatography')
-#' mona_getMeta(example_id_query, var = 'name', value = 'ionization')
-#' mona_getMeta(example_id_query, var = 'name', value = 'ms level')
-#' mona_getMeta(example_id_query, var = 'name', value = 'mass error')
-#' mona_getMeta(example_spec_query, var = 'category', value = 'mass spectrometry')
-#' mona_getMeta(example_spec_query, var = 'category', value = 'chromatography')
-#' mona_getMeta(example_spec_query, var = 'name', value = 'mass error')
+#' @return a tibble
+#'
+#' @export
 #'
 mona_getMeta <- function(df, var, value) {
   UseMethod('mona_getMeta')
 }
 
 #' @describeIn mona_getMeta Get values from meta data from ID query
+#' @export
+#' @examples
+#' \dontrun{
+#' mona_getMeta(example_id_query, var = 'category', value = 'mass spectrometry')
+#' mona_getMeta(example_id_query, var = 'category', value = 'focused ion')
+#' mona_getMeta(example_id_query, var = 'category', value = 'chromatography')
+#' mona_getMeta(example_id_query, var = 'name', value = 'ionization')
+#' mona_getMeta(example_id_query, var = 'name', value = 'ms level')
+#' mona_getMeta(example_id_query, var = 'name', value = 'mass error')
+#' }
 mona_getMeta.mona_id_query <-
   function(df,
            var = c('category', 'name'),
@@ -80,6 +84,12 @@ mona_getMeta.mona_id_query <-
   }
 
 #' @describeIn mona_getMeta Extract meta data from spectrum query
+#' @export
+#' @examples
+#' mona_getMeta(example_spec_query, var = 'category', value = 'mass spectrometry')
+#' mona_getMeta(example_spec_query, var = 'category', value = 'chromatography')
+#' mona_getMeta(example_spec_query, var = 'name', value = 'mass error')
+#'
 mona_getMeta.mona_spec_query <-
   function(df,
            var = c('category',

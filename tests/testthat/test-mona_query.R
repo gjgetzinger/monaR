@@ -32,7 +32,7 @@ test_that("Querying MONA by molecular formula works", {
 
 test_that("Querying MONA by mass works", {
   expect_true(
-    'MXWJVTOOROXGIU-UHFFFAOYSA-N' %in% sapply(mona_query(query = 215.093773, from = "mass")$compound, function(x) {
+    'MXWJVTOOROXGIU-UHFFFAOYSA-N' %in% sapply(mona_query(query = 216, mass_tol_Da = 1, from = "mass")$compound, function(x) {
       x[['inchiKey']]
     }, simplify = T)
   )

@@ -22,9 +22,12 @@
 
 #' Example mona_querySpec results
 #'
-#' An example result generated from \code(mona_querySpec(spectrum =
-#' atrazine_ms2, minSimilarity = 800, precursorMZ = 216, precursorToleranceDa =
-#' 1))
+#' An example result generated from
+#' mona_querySpec(
+#'    spectrum = atrazine_ms2,
+#'    minSimilarity = 800,
+#'    precursorMZ = 216,
+#'    precursorToleranceDa =1)
 #'
 #' @format tibble with 9 rows and 2 variables
 "example_spec_query"
@@ -51,5 +54,21 @@ NULL
 #'
 NULL
 
+#' @importFrom stats aggregate
+#' @importFrom stats setNames
+#' @importFrom rlang :=
+#' @importFrom dplyr id
+#' @importFrom dplyr summarize
+#' @importFrom dplyr count
+#' @importFrom dplyr desc
+#' @importFrom dplyr arrange
+#' @importFrom dplyr mutate
+#' @importFrom dplyr rename
+#' @importFrom dplyr summarise
+#' @importFrom purrr compact
+#' @import tidyr
+#' @import purrr
+#' @import dplyr
+#' @import tibble
 
-utils::globalVariables(c("mz", "intensity", "."))
+utils::globalVariables(c("mz", "intensity", ".", "name", "value", "category", "unit"))

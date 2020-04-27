@@ -30,7 +30,7 @@ MS4).}
 (all, LC-MS, GC-MS, CE-MS)}
 }
 \value{
-A tibble containing the search results or NA if no matches.
+a [tibble][tibble::tibble-package]
 }
 \description{
 Submit a query to MONA API (https://mona.fiehnlab.ucdavis.edu) by text

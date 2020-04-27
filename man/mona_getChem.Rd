@@ -20,8 +20,13 @@ mona_getChem(df, var)
     "molecular formula", "external id", "computed")
 )
 }
+\arguments{
+\item{df}{A tibble returned by a MoNA query}
+
+\item{var}{The variable to return from the meta data}
+}
 \value{
-A tibble with columns id, value
+a tibble containing extracted chemical data
 }
 \description{
 Extract chemical data from MONA queries

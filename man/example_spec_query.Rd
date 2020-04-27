@@ -9,8 +9,11 @@
 example_spec_query
 }
 \description{
-An example result generated from \code(mona_querySpec(spectrum =
-atrazine_ms2, minSimilarity = 800, precursorMZ = 216, precursorToleranceDa =
-1))
+An example result generated from
+mona_querySpec(
+   spectrum = atrazine_ms2,
+   minSimilarity = 800,
+   precursorMZ = 216,
+   precursorToleranceDa =1)
 }
 \keyword{datasets}
