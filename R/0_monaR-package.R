@@ -50,9 +50,7 @@ NULL
 NULL
 
 #' Data pronouns for tidy evaluation
-#'
-#' @name .data
-#' @rdname .data
+#' @name data
 #' @keywords internal
 #' @export
 #' @importFrom rlang .data
