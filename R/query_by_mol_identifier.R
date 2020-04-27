@@ -17,17 +17,17 @@
 #' @export
 #'
 mona_query <-
-  function(query,
-           from = c('text', 'name', 'InChIKey', 'molform', 'mass'),
-           mass_tol_Da = 0.1,
-           ionization = c('positive', 'negative'),
-           ms_level = c("MS1", "MS2", "MS3", "MS4"),
-           source_introduction = c("LC-MS", "GC-MS", "CE-MS")
+  function(query = NULL,
+           from = NULL,
+           mass_tol_Da = NULL,
+           ionization = NULL,
+           ms_level = NULL,
+           source_introduction = NULL
   ) {
-    from <- match.arg(from, several.ok = F)
-    ionization <- match.arg(ionization, several.ok = T)
-    ms_level <- match.arg(ms_level, several.ok = T)
-    source_introduction <- match.arg(source_introduction, several.ok = T)
+    from <- match.arg(from, c('text', 'name', 'InChIKey', 'molform', 'mass'), several.ok = F)
+    ionization <- match.arg(ionization, c('positive', 'negative'), several.ok = T)
+    ms_level <- match.arg(ms_level, c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
+    source_introduction <- match.arg(source_introduction, c("LC-MS", "GC-MS", "CE-MS"), several.ok = T)
 
     stopifnot(c(length(query) == 1, length(from) == 1))
 
@@ -68,22 +68,28 @@ mona_query <-
 
     tags <- list()
     # add ionization to query
-    tags['ionization'] <- paste0('(', paste(
-      sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
-      collapse = ' or '
-    ), ')')
+    if(!is.null(ionization)){
+      tags['ionization'] <- paste0('(', paste(
+        sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
+        collapse = ' or '
+      ), ')')
+    }
 
     # add ms level
-    tags['ms_level'] <- paste0('(', paste(
-      sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
-      collapse = ' or '
-    ), ')')
+    if(!is.null(ms_level)){
+      tags['ms_level'] <- paste0('(', paste(
+        sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
+        collapse = ' or '
+      ), ')')
+    }
 
     # add source introduction
-    tags['source_introduction'] <- paste0('(', paste(
-      sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
-      collapse = ' or '
-    ), ')')
+    if(!is.null(source_introduction)){
+      tags['source_introduction'] <- paste0('(', paste(
+        sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
+        collapse = ' or '
+      ), ')')
+    }
 
     if (length(tags) > 0) {
       url <- paste(c(url, tags), collapse = ' and ')
@@ -91,7 +97,7 @@ mona_query <-
 
     url <- utils::URLencode(url)
 
-    resp <- httr::GET(url = url, httr::timeout(getOption('timeout')))
+    resp <- httr::GET(url = url)
 
     httr::stop_for_status(resp)
 

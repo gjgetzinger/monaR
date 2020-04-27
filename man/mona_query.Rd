@@ -5,12 +5,12 @@
 \title{Query Mass Bank of North America API by molecule identifier}
 \usage{
 mona_query(
-  query,
-  from = c("text", "name", "InChIKey", "molform", "mass"),
-  mass_tol_Da = 0.1,
-  ionization = c("positive", "negative"),
-  ms_level = c("MS1", "MS2", "MS3", "MS4"),
-  source_introduction = c("LC-MS", "GC-MS", "CE-MS")
+  query = NULL,
+  from = NULL,
+  mass_tol_Da = NULL,
+  ionization = NULL,
+  ms_level = NULL,
+  source_introduction = NULL
 )
 }
 \arguments{
