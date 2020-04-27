@@ -18,7 +18,15 @@ mona_getMeta(df, var, value)
     "mass accuracy", "mass error")
 )
 
-\method{mona_getMeta}{mona_spec_query}(df, var, value)
+\method{mona_getMeta}{mona_spec_query}(
+  df,
+  var = c("category", "name", "submitter", "splash", "submitter", "library", "score"),
+  value = c("mass spectrometry", "chromatography", "focused ion", "accession", "date",
+    "author", "license", "copyright", "publication", "exact mass", "instrument",
+    "instrument type", "ms level", "ionization", "column", "column temperature",
+    "injection temperature", "retention time", "precursor m/z", "precursor type",
+    "mass accuracy", "mass error")
+)
 }
 \value{
 A tibble with columns id, value
@@ -31,7 +39,6 @@ Extract values from meta data records retrieved from MONA queries
 \item \code{mona_id_query}: Get values from meta data from ID query
 
 \item \code{mona_spec_query}: Extract meta data from spectrum query
-TODO
 }}
 
 \examples{
@@ -41,5 +48,8 @@ mona_getMeta(example_id_query, var = 'category', value = 'chromatography')
 mona_getMeta(example_id_query, var = 'name', value = 'ionization')
 mona_getMeta(example_id_query, var = 'name', value = 'ms level')
 mona_getMeta(example_id_query, var = 'name', value = 'mass error')
+mona_getMeta(example_spec_query, var = 'category', value = 'mass spectrometry')
+mona_getMeta(example_spec_query, var = 'category', value = 'chromatography')
+mona_getMeta(example_spec_query, var = 'name', value = 'mass error')
 
 }

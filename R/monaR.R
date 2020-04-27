@@ -20,6 +20,15 @@
 #'
 "example_id_query"
 
+#' Example mona_querySpec results
+#'
+#' An example result generated from \code(mona_querySpec(spectrum =
+#' atrazine_ms2, minSimilarity = 800, precursorMZ = 216, precursorToleranceDa =
+#' 1))
+#'
+#' @format tibble with 9 rows and 2 variables
+"example_spec_query"
+
 #' Pipe operator
 #'
 #' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.

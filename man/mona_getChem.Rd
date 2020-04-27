@@ -14,7 +14,11 @@ mona_getChem(df, var)
     "molecular formula", "external id", "computed")
 )
 
-\method{mona_getChem}{mona_spec_query}(df, var)
+\method{mona_getChem}{mona_spec_query}(
+  df,
+  var = c("inchi", "inchiKey", "molFile", "names", "SMILES", "compound class",
+    "molecular formula", "external id", "computed")
+)
 }
 \value{
 A tibble with columns id, value
@@ -27,7 +31,6 @@ Extract chemical data from MONA queries
 \item \code{mona_id_query}: Get values from meta data from ID query
 
 \item \code{mona_spec_query}: Extract meta data from spectrum queries
-TODO
 }}
 
 \examples{

@@ -57,3 +57,5 @@ mona_parseSpec.Spectrum2 <- function(spec) {
           collapse = ":") %>%
     paste0(.data, collapse = ' ')
 }
+
+
