@@ -49,14 +49,8 @@ NULL
 #' @usage lhs \%>\% rhs
 NULL
 
-#' Data pronouns for tidy evaluation
-#' @name data
-#' @keywords internal
-#' @export
-#' @importFrom rlang .data
-#'
-NULL
 
+#' @importFrom rlang .data
 #' @importFrom stats aggregate
 #' @importFrom stats setNames
 #' @importFrom rlang :=
@@ -69,9 +63,27 @@ NULL
 #' @importFrom dplyr rename
 #' @importFrom dplyr summarise
 #' @importFrom purrr compact
-#' @import tidyr
-#' @import purrr
-#' @import dplyr
-#' @import tibble
+#' @importFrom purrr map
+#' @importFrom tidyr pivot_wider
+#' @importFrom tidyr unite
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr left_join
+#' @importFrom dplyr select
+#' @importFrom dplyr transmute
+#' @importFrom dplyr select_at
+#' @importFrom dplyr bind_rows
+#' @importFrom dplyr filter_at
+#' @importFrom dplyr vars
+#' @importFrom dplyr any_vars
+#' @importFrom dplyr group_by
+#' @importFrom dplyr filter
+#' @importFrom dplyr distinct
+#' @importFrom dplyr starts_with
+#' @importFrom dplyr contains
+#' @importFrom tibble enframe
+#' @importFrom dplyr bind_cols
+#' @importFrom dplyr mutate_at
+#'
+#'
 
 utils::globalVariables(c("mz", "intensity", ".", "name", "value", "category", "unit"))

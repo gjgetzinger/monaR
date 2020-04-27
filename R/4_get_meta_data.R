@@ -15,14 +15,14 @@ mona_getMeta <- function(df, var, value) {
 #' @describeIn mona_getMeta Get values from meta data from ID query
 #' @export
 #' @examples
-#' \dontrun{
+
 #' mona_getMeta(example_id_query, var = 'category', value = 'mass spectrometry')
 #' mona_getMeta(example_id_query, var = 'category', value = 'focused ion')
 #' mona_getMeta(example_id_query, var = 'category', value = 'chromatography')
 #' mona_getMeta(example_id_query, var = 'name', value = 'ionization')
 #' mona_getMeta(example_id_query, var = 'name', value = 'ms level')
 #' mona_getMeta(example_id_query, var = 'name', value = 'mass error')
-#' }
+#'
 mona_getMeta.mona_id_query <-
   function(df,
            var = c('category', 'name'),

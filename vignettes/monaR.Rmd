@@ -12,10 +12,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
 ```
 
 ```{r setup}
 library(monaR)
+library(dplyr)
 ```
 
 # Introduction
@@ -82,7 +84,9 @@ mona_query(
   from = 'InChIKey',
   ms_level = 'MS2',
   ionization = 'positive',
-  source_introduction = 'LC-MS)
+  source_introduction = 'LC-MS'
+  )
+  
 ```
 
 ## Query by mass spectrum 
@@ -93,13 +97,13 @@ Spectra can be provided as a `data.frame` or `matrix`. For example:
 atrazine_ms2
 ```
 
-```{r, eval=F}
+```{r}
 mona_querySpec(spectrum = atrazine_ms2)
 ```
 
 Additional limiters can be provided by designating a minimum spectral similarity threshold (`minSimilarity`) and the mass-to-charge of the precursor ion (`precursorMZ`). When `precursorMZ` is provided, the allowed mass error should be designated in Daltons (`precursorToleranceDa`) or parts-per-million (ppm, `precursorTolerancePPM`). 
 
-```{r, eval = F}
+```{r}
 mona_querySpec(
   spectrum = atrazine_ms2,
   minSimilarity = 800,
@@ -118,31 +122,31 @@ id_query_rst <- example_id_query
 spec_query_rst <- example_spec_query
 ```
 
-```{r, eval=F}
+```{r}
 id_query_rst <- mona_query('atrazine', 'name')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'category', value = 'mass spectrometry')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'category', value = 'focused ion')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'category', value = 'chromatography')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'name', value = 'ionization')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'name', value = 'ms level')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(id_query_rst, var = 'name', value = 'mass error')
 ```
 ### Spectrum queries 
@@ -155,55 +159,55 @@ spec_query_rst <-
     precursorToleranceDa = 1
   ))
 ```
-```{r, eval = F}
+```{r}
 mona_getMeta(spec_query_rst, var = 'category', value = 'mass spectrometry')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(spec_query_rst, var = 'category', value = 'chromatography')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getMeta(spec_query_rst, var = 'name', value = 'mass error')
 ```
 
 ## Getting chemical data 
 
-```{r, eval = F}
+```{r}
 mona_getChem(id_query_rst, var = 'inchi')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getChem(spec_query_rst, var = 'inchiKey')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getChem(id_query_rst, var = 'external id')
 ```
 
-```{r, eval = F}
+```{r}
 mona_getChem(spec_query_rst, var = 'external id')
 ```
 
 ## Getting spectral data 
 Spectral data is pulled from query results into a list named by spectrum ID. 
 
-```{r, eval = F}
+```{r}
 mona_getSpec(slice(id_query_rst,1))
 ```
-```{r, eval = F}
+```{r}
 mona_getSpec(slice(spec_query_rst, 1))
 ```
-```{r, eval = F}
+```{r}
 mona_getSpec(filter(spec_query_rst, spec_query_rst$hit$id == 'SM841401'))
 ```
-```{r, eval = F}
+```{r}
 mona_getSpec(filter(spec_query_rst,spec_query_rst$score > 0.8))
 ```
 When peak annotations are provided, they can be merged with the spectra using the `ann` argument. 
-```{r, eval = F}
+```{r}
 mona_getSpec(slice(id_query_rst,150), ann = TRUE)
 ```
-```{r, eval = F}
+```{r}
 mona_getSpec(slice(spec_query_rst, 1), ann = TRUE)
 ```
