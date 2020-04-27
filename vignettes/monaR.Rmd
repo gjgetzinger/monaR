@@ -157,7 +157,7 @@ spec_query_rst <-
     minSimilarity = 800,
     precursorMZ = 216,
     precursorToleranceDa = 1
-  ))
+  )
 ```
 ```{r}
 mona_getMeta(spec_query_rst, var = 'category', value = 'mass spectrometry')
