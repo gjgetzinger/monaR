@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Querying the Mass Bank of North America API with monaR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+
+  
 ---
 
 ```{r, include = FALSE}
@@ -12,6 +14,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+# github_document:
+#     toc: true
+#     toc_depth: 2
+#     html_preview: false
 
 ```
 
