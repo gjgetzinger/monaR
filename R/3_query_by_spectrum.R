@@ -63,7 +63,12 @@ mona_querySpec <-
     attributes(parsed) <-
       append(attributes(parsed),
              list(
-               query = query
+               query = query,
+               spectrum = spectrum,
+               minSimilarity = minSimilarity,
+               precursorMZ = precursorMZ,
+               precursorToleranceDa = precursorToleranceDa,
+               precursorTolerancePPM = precursorTolerancePPM
              ))
     class(parsed) <- append('mona_spec_query', class(parsed))
     return(parsed)

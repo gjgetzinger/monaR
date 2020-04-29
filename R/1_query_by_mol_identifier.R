@@ -114,7 +114,12 @@ mona_query <-
     attributes(parsed) <-
       append(attributes(parsed),
              list(query = query,
-                  from = from))
+                  from = from,
+                  mass_tol_Da = mass_tol_Da,
+                  ionization = ionization,
+                  ms_level = ms_level,
+                  source_introduction = source_introduction
+                  ))
     class(parsed) <- append('mona_id_query', class(parsed))
     return(parsed)
   }

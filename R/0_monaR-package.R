@@ -83,7 +83,48 @@ NULL
 #' @importFrom tibble enframe
 #' @importFrom dplyr bind_cols
 #' @importFrom dplyr mutate_at
+#' @importFrom crayon blue
+#' @importFrom crayon underline
+#' @importFrom crayon bold
 #'
 #'
 
 utils::globalVariables(c("mz", "intensity", ".", "name", "value", "category", "unit"))
+
+# print method for id query
+#' @export
+print.mona_id_query <- function(x, ...) {
+  att <- attributes(x)
+  cat(blue$underline$bold("MoNA query by structure/molecule identifier:\n"))
+  invisible(purrr::map(names(formals(mona_query)), function(a) {
+    if (a %in% names(att)) {
+      cat(blue$underline(a), blue(":"), blue(att[[a]]), '\n')
+    }
+  }))
+  cat(blue$underline('Results:\n'))
+  dplyr::glimpse(x)
+  invisible(x)
+}
+
+# print method for spec query
+#' @export
+print.mona_spec_query <- function(x, ...) {
+  att <- attributes(x)
+  att <- att[names(att) != 'query']
+  cat(blue$underline$bold("MoNA query by mass spectrum:\n"))
+  invisible(purrr::map(names(formals(mona_querySpec)), function(a) {
+    if (a %in% names(att)) {
+      if(a == 'spectrum'){
+        cat(blue$underline(a),'\n')
+        dplyr::glimpse(mona_parseSpec(att[[a]]))
+      } else {
+        cat(blue$underline(a), blue(":"), blue(att[[a]]), '\n')
+      }
+
+    }
+  }))
+  cat(blue$underline('Results:\n'))
+  dplyr::glimpse(x)
+  invisible(x)
+}
+
