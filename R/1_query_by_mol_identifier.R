@@ -37,6 +37,9 @@ mona_query <-
     }
 
     if (from == 'mass') {
+      if(is.null(mass_tol_Da)){
+        stop("mass_tol_Da must be provided when searching by mass")
+      }
       mass_range <- query + c(-1, 1) * mass_tol_Da
     }
 
@@ -103,7 +106,9 @@ mona_query <-
 
     url <- utils::URLencode(url)
 
-    resp <- httr::GET(url = url)
+    resp <- httr::GET(url = url,  httr::timeout(getOption('timeout')))
+
+    httr::stop_for_status(resp)
 
     if (resp$status_code == 200) {
       cont <- httr::content(resp, "text")

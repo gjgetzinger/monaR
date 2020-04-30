@@ -5,8 +5,6 @@ vignette: >
   %\VignetteIndexEntry{Querying the Mass Bank of North America API with monaR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-
-  
 ---
 
 ```{r, include = FALSE}
@@ -14,6 +12,11 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+# output: 
+#   html_document:
+#       toc: true 
+#       theme: united
 # github_document:
 #     toc: true
 #     toc_depth: 2
@@ -39,52 +42,52 @@ Querying by identifier takes at mininum two inputs: `query` and `from`. The `que
 
 ### Query by text string 
 Take for instance we want to search for the chemical Microcystin-LR by its abbreviation, MCLR. 
-```{r, eval = F}
+```{r, eval = T}
 mona_query(query = 'MCLR', from = 'text')
 ```
 
 ### Query by chemical name 
 Alternatively, we can search by name. 
-```{r, eval=F}
+```{r, eval=T}
 mona_query(query = 'Microcystin-LR', from = 'name')
 ```
 
 ### Query by InChI Key 
 Since names and abbreviations are not standardized, it is useful to be able to query by a unique identifier related to the target chemicals structure. The ideal identifier for this purpose is the International Chemical Identifier (InChI) in hashed form, which is also known as an InChI Key. The InChI Key encodes all the structural information (type, position and arrangement of elements in a molecule) in a 27-digit string. 
 
-```{r, eval = F}
-mona_query(query = 'ZYZCGGRZINLQBL-JCGNTXOTSA-N', from = 'InChIKey')
+```{r, eval = T}
+mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
 ```
 
-In instances where the target molecule has several stereo isomers, all isomer matches can be retrieved by queyring by the connectivity part of the InChI Key alone, which is encoded in the first 14 character. 
+In instances where the target molecule has several stereo isomers, all isomer matches can be retrieved by queyring by the connectivity layer of the InChI, which is encoded in the first 14 characters of the InChI Key. Such a situation might be useful when exact stereochemistry differs between databases.
 
-```{r, eval = F}
+```{r, eval = T}
 mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey')
 ```
 
 ### Query by molecular formula 
 To retrieve all the extant structural isomers molecule, we can search by molecular formula. 
 
-```{r, eval = F}
+```{r, eval = T}
 mona_query(query = 'C49H74N10O12', from = 'molform')
 ```
 
 ### Query by exact mass 
 Alternatively the exact mass can be used. 
-```{r, eval = F}
-mona_query(query = 994.5488, from = 'mass')
+```{r, eval = T}
+mona_query(query = 994.5488, from = 'mass', mass_tol_Da = 0.1)
 ```
 
 ### Additional search parameters 
 Queries can be further constrained to specific types of spectra by passing arguments to `ionization`, `ms_level`, and `source_introduction`. When searching by exact mass, `mass_tol_Da` designates the allowed mass error in Daltons. 
 
 To search only for MS^2^ spectra
-```{r, eval = F}
+```{r, eval = T}
 mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey', ms_level = 'MS2')
 ```
 
 To search for MS^2^ spectra only in positive ion mode collected on an LC-MS instrument 
-```{r, eval = F}
+```{r, eval = T}
 mona_query(
   query = 'ZYZCGGRZINLQBL',
   from = 'InChIKey',
@@ -123,13 +126,10 @@ Queries to MoNA return all results a single tibble. Various helper functions are
 ## Getting meta data 
 Various aspects of the meta data can be extracted from identifier and spectra queries. 
 ### Identifier queries 
-```{r, include=F, eval=T}
-id_query_rst <- example_id_query
-spec_query_rst <- example_spec_query
-```
 
 ```{r}
 id_query_rst <- mona_query('atrazine', 'name')
+id_query_rst
 ```
 
 ```{r}
@@ -156,7 +156,7 @@ mona_getMeta(id_query_rst, var = 'name', value = 'ms level')
 mona_getMeta(id_query_rst, var = 'name', value = 'mass error')
 ```
 ### Spectrum queries 
-```{r, eval=F}
+```{r}
 spec_query_rst <-
   mona_querySpec(
     spectrum = atrazine_ms2,

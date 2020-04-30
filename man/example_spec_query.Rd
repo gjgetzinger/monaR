@@ -4,7 +4,7 @@
 \name{example_spec_query}
 \alias{example_spec_query}
 \title{Example mona_querySpec results}
-\format{tibble with 9 rows and 2 variables}
+\format{tibble with 15 rows and 2 variables}
 \usage{
 example_spec_query
 }

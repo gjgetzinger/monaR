@@ -33,58 +33,62 @@ mona_getChem.mona_id_query <-
     var <- match.arg(var, several.ok = F)
 
     if (var %in% c('inchi', 'inchiKey', 'molFile')) {
-      d <- map(
+      d <- purrr::map(
         df$compound,
         .f = function(x) {
-          xx <- as_tibble(x)
+          xx <- dplyr::as_tibble(x)
           if (var %in% colnames(xx)) {
-            select_at(xx, var)
+            dplyr::select_at(xx, var)
           } else {
-            transmute(xx, !!var := NA)
+            dplyr::transmute(xx, !!var := NA)
           }
         }
       ) %>%
-        setNames(nm = df$id) %>%
-        bind_rows(.id = 'id')
+        stats::setNames(nm = df$id) %>%
+        dplyr::bind_rows(.id = 'id')
     }
 
     if (var %in% c('names')) {
-      d <- map(
+      d <- purrr::map(
         df$compound,
         .f = function(x) {
-          as_tibble(x$names[[1]])
+          dplyr::as_tibble(x$names[[1]])
         }
       ) %>%
-        setNames(nm = df$id) %>%
-        bind_rows(.id = 'id')
+        stats::setNames(nm = df$id) %>%
+        dplyr::bind_rows(.id = 'id')
     }
 
     if (var %in% c('SMILES',
                    'compound class',
                    'molecular formula')) {
-     d <- map(df$compound, function(x) {
-        as_tibble(x$metaData[[1]]) %>%
-          filter_at(vars(name), any_vars(. == !!var))
+      d <- purrr::map(df$compound, function(x) {
+        dplyr::as_tibble(x$metaData[[1]]) %>%
+          dplyr::filter_at(
+            .vars = dplyr::vars(name),
+            .vars_predicate = dplyr::any_vars(. == !!var)
+          )
       }) %>%
-        setNames(nm = df$id) %>%
-        bind_rows(.id = 'id') %>%
-        group_by(id) %>%
-        filter(!is.na(value)) %>%
-        distinct(id, .keep_all = T) %>%
-        pivot_wider(id)
+        stats::setNames(nm = df$id) %>%
+        dplyr::bind_rows(.id = 'id') %>%
+        dplyr::group_by(id) %>%
+        dplyr::filter(!is.na(value)) %>%
+        dplyr::distinct(id, .keep_all = T) %>%
+        tidyr::pivot_wider(id)
     }
 
     if (var %in% c('external id', 'computed')) {
-     d <- map(df$compound, function(x) {
-        as_tibble(x$metaData[[1]]) %>%
-          filter_at(vars(category), any_vars(. == !!var))
+      d <- purrr::map(df$compound, function(x) {
+        dplyr::as_tibble(x$metaData[[1]]) %>%
+          dplyr::filter_at(dplyr::vars(category), dplyr::any_vars(. == !!var))
       }) %>%
-        setNames(nm = df$id) %>%
-        bind_rows(.id = 'id') %>%
-        group_by(id) %>%
-        pivot_wider(id, name)
+        stats::setNames(nm = df$id) %>%
+        dplyr::bind_rows(.id = 'id') %>%
+        dplyr::group_by(id) %>%
+        tidyr::pivot_wider(id, name)
     }
-  return(d)
+    class(d) <- append('mona_meta', class(d))
+    return(d)
   }
 
 #' @describeIn mona_getChem Extract meta data from spectrum queries
@@ -105,56 +109,60 @@ mona_getChem.mona_spec_query <-  function(df,
   var <- match.arg(var, several.ok = F)
 
   if (var %in% c('inchi', 'inchiKey', 'molFile')) {
-    d <- map(
+    d <- purrr::map(
       df$hit$compound,
       .f = function(x) {
-        xx <- as_tibble(x)
+        xx <- dplyr::as_tibble(x)
         if (var %in% colnames(xx)) {
-          select_at(xx, var)
+          dplyr::select_at(xx, var)
         } else {
-          transmute(xx, !!var := NA)
+          dplyr::transmute(xx, !!var := NA)
         }
       }
     ) %>%
-      setNames(nm = df$hit$id) %>%
-      bind_rows(.id = 'id')
+      stats::setNames(nm = df$hit$id) %>%
+      dplyr::bind_rows(.id = 'id')
   }
 
   if (var %in% c('names')) {
-    d <- map(
+    d <- purrr::map(
       df$hit$compound,
       .f = function(x) {
-        as_tibble(x$names[[1]])
+        dplyr::as_tibble(x$names[[1]])
       }
     ) %>%
-      setNames(nm = df$hit$id) %>%
-      bind_rows(.id = 'id')
+      stats::setNames(nm = df$hit$id) %>%
+      dplyr::bind_rows(.id = 'id')
   }
 
   if (var %in% c('SMILES',
                  'compound class',
                  'molecular formula')) {
-    d <- map(df$hit$compound, function(x) {
-      as_tibble(x$metaData[[1]]) %>%
-        filter_at(vars(name), any_vars(. == !!var))
+    d <- purrr::map(df$hit$compound, function(x) {
+      dplyr::as_tibble(x$metaData[[1]]) %>%
+        dplyr::filter_at(
+          .vars = dplyr::vars(name),
+          .vars_predicate = dplyr::any_vars(. == !!var)
+        )
     }) %>%
-      setNames(nm = df$hit$id) %>%
-      bind_rows(.id = 'id') %>%
-      group_by(id) %>%
-      filter(!is.na(value)) %>%
-      distinct(id, .keep_all = T) %>%
-      pivot_wider(id)
+      stats::setNames(nm = df$hit$id) %>%
+      dplyr::bind_rows(.id = 'id') %>%
+      dplyr::group_by(id) %>%
+      dplyr::filter(!is.na(value)) %>%
+      dplyr::distinct(id, .keep_all = T) %>%
+      tidyr::pivot_wider(id)
   }
 
   if (var %in% c('external id', 'computed')) {
-    d <- map(df$hit$compound, function(x) {
-      as_tibble(x$metaData[[1]]) %>%
-        filter_at(vars(category), any_vars(. == !!var))
+    d <- purrr::map(df$hit$compound, function(x) {
+      dplyr::as_tibble(x$metaData[[1]]) %>%
+        dplyr::filter_at(dplyr::vars(category), dplyr::any_vars(. == !!var))
     }) %>%
-      setNames(nm = df$hit$id) %>%
-      bind_rows(.id = 'id') %>%
-      group_by(id) %>%
-      pivot_wider(id, name)
+      stats::setNames(nm = df$hit$id) %>%
+      dplyr::bind_rows(.id = 'id') %>%
+      dplyr::group_by(id) %>%
+      tidyr::pivot_wider(id, name)
   }
+  class(d) <- append('mona_meta', class(d))
   return(d)
 }

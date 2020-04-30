@@ -62,25 +62,32 @@ mona_getMeta.mona_id_query <-
       value <- match.arg(value, several.ok = F)
     }
 
-    map(df$metaData, function(x) {
-      as_tibble(x) %>%
-        filter_at(vars(!!var), any_vars(. == !!value))
+    d <- purrr::map(df$metaData, function(x) {
+      dplyr::as_tibble(x) %>%
+        dplyr::filter_at(
+          .vars = dplyr::vars(!!var),
+          .vars_predicate = dplyr::any_vars(. == !!value)
+        )
     }) %>%
-      setNames(nm = df$id) %>%
-      bind_rows(.id = 'id') %>%
-      unite("name", name, unit, na.rm = T) %>%
-      select(id, name, value) %>%
-      aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
-      as_tibble() %>%
-      pivot_wider(id, name) %>%
-      mutate_at(.vars = vars(
-        starts_with("mass"),
-        contains('exact mass'),
-        contains('resolution'),
-        contains('m/z')
-      ),
-      as.numeric) %>%
-      group_by(id)
+      stats::setNames(nm = df$id) %>%
+      dplyr::bind_rows(.id = 'id') %>%
+      tidyr::unite("name", name, unit, na.rm = T) %>%
+      dplyr::select(id, name, value) %>%
+      stats::aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
+      dplyr::as_tibble() %>%
+      tidyr::pivot_wider(id, name) %>%
+      dplyr::mutate_at(
+        .vars = dplyr::vars(
+          dplyr::starts_with("mass"),
+          dplyr::contains('exact mass'),
+          dplyr::contains('resolution'),
+          dplyr::contains('m/z')
+        ),
+        as.numeric
+      ) %>%
+      dplyr::group_by(id)
+    class(d) <- append('mona_meta', class(d))
+    return(d)
   }
 
 #' @describeIn mona_getMeta Extract meta data from spectrum query
@@ -136,28 +143,36 @@ mona_getMeta.mona_spec_query <-
     }
 
     if (var %in% c('submitter', 'splash', 'submitter', 'library', 'score')) {
-      bind_cols(enframe(df$hit$id, name = NULL, value = 'id'),
-                as_tibble(df$hit[, var])) %>%
-        group_by(id)
+      d <-
+        dplyr::bind_cols(tibble::enframe(df$hit$id, name = NULL, value = 'id'),
+                         dplyr::as_tibble(df$hit[, var])) %>%
+        dplyr::group_by(id)
     } else {
-      map(df$hit$metaData, function(x) {
-        as_tibble(x) %>%
-          filter_at(vars(!!var), any_vars(. == !!value))
+      d <- purrr::map(df$hit$metaData, function(x) {
+        dplyr::as_tibble(x) %>%
+          dplyr::filter_at(
+            .vars = dplyr::vars(!!var),
+            .vars_predicate = dplyr::any_vars(. == !!value)
+          )
       }) %>%
-        setNames(nm = df$hit$id) %>%
-        bind_rows(.id = 'id') %>%
-        unite("name", name, unit, na.rm = T) %>%
-        select(id, name, value) %>%
-        aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
-        as_tibble() %>%
-        pivot_wider(id, name) %>%
-        mutate_at(.vars = vars(
-          starts_with("mass"),
-          contains('exact mass'),
-          contains('resolution'),
-          contains('m/z')
-        ),
-        as.numeric) %>%
-        group_by(id)
+        stats::setNames(nm = df$hit$id) %>%
+        dplyr::bind_rows(.id = 'id') %>%
+        tidyr::unite("name", name, unit, na.rm = T) %>%
+        dplyr::select(id, name, value) %>%
+        stats::aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
+        dplyr::as_tibble() %>%
+        tidyr::pivot_wider(id, name) %>%
+        dplyr::mutate_at(
+          .vars = dplyr::vars(
+            dplyr::starts_with("mass"),
+            dplyr::contains('exact mass'),
+            dplyr::contains('resolution'),
+            dplyr::contains('m/z')
+          ),
+          as.numeric
+        ) %>%
+        dplyr::group_by(id)
     }
+    class(d) <- append('mona_meta', class(d))
+    return(d)
   }

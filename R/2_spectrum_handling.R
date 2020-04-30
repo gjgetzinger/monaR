@@ -84,24 +84,26 @@ mona_getSpec <- function(df, ann = FALSE){
 #' mona_getSpec(dplyr::slice(example_id_query,150), ann = TRUE)
 #'
 mona_getSpec.mona_id_query <- function(df, ann = FALSE) {
-  spec <- setNames(map(df$spectrum, mona_parseSpec), df$id)
+  spec <- stats::setNames(purrr::map(df$spectrum, mona_parseSpec), df$id)
   if (ann) {
-    setNames(lapply(1:length(spec), function(x) {
+  d <- stats::setNames(lapply(1:length(spec), function(x) {
       if (is.null(df$annotations[[x]]) | length(df$annotations[[x]]) == 0) {
         spec[[x]]
       } else {
-        left_join(
+        dplyr::left_join(
           spec[[x]],
-          as_tibble(df$annotations[[x]]) %>%
-            mutate(mz = value) %>%
-            select(-value),
+          dplyr::as_tibble(df$annotations[[x]]) %>%
+            dplyr::mutate(mz = value) %>%
+            dplyr::select(-value),
           by = 'mz'
         )
       }
     }), names(spec))
   } else{
-    spec
+    d <- spec
   }
+  class(d) <- append('mona_meta', class(d))
+  return(d)
 }
 
 #' @describeIn mona_getSpec Extract spectra from spectrum query
@@ -113,22 +115,24 @@ mona_getSpec.mona_id_query <- function(df, ann = FALSE) {
 #' mona_getSpec(dplyr::slice(example_spec_query, 1), ann = TRUE)
 #'
 mona_getSpec.mona_spec_query <- function(df, ann = FALSE) {
-  spec <- setNames(map(df$hit$spectrum, mona_parseSpec), df$hit$id)
+  spec <- stats::setNames(purrr::map(df$hit$spectrum, mona_parseSpec), df$hit$id)
   if (ann) {
-    setNames(lapply(1:length(spec), function(x) {
+    d <- stats::setNames(lapply(1:length(spec), function(x) {
       if (is.null(df$hit$annotations[[x]])) {
         spec[[x]]
       } else {
-        left_join(
+        dplyr::left_join(
           spec[[x]],
-          as_tibble(df$hit$annotations[[x]]) %>%
-            mutate(mz = value) %>%
-            select(-value),
+          dplyr::as_tibble(df$hit$annotations[[x]]) %>%
+            dplyr::mutate(mz = value) %>%
+            dplyr::select(-value),
           by = 'mz'
         )
       }
     }), names(spec))
   } else{
-    spec
+  d <- spec
   }
+  class(d) <- append('mona_meta', class(d))
+  return(d)
 }
