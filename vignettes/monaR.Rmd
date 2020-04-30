@@ -1,10 +1,12 @@
 ---
 title: "Querying the Mass Bank of North America API with monaR"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Querying the Mass Bank of North America API with monaR}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, include = FALSE}
@@ -12,16 +14,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-# output: 
-#   html_document:
-#       toc: true 
-#       theme: united
-# github_document:
-#     toc: true
-#     toc_depth: 2
-#     html_preview: false
-
 ```
 
 ```{r setup}
@@ -34,25 +26,25 @@ Mass Bank of North America (MoNA) is a mass spectrometry resources desinged for 
 
 MoNA provides a REST API for programatic queries. This package provides wrapper functions for using the MoNA API from R. 
 
-# Queries 
+# Queries
 Two types of queries are supported. First, molecular identifiers can be used to query record meta data for potential matching compound. Second, spectral similarity searching can be used to return records from similar spectra stored in MoNA. 
 
-## Query by molecular or structure identifier 
+## Query by molecular or structure identifier
 Querying by identifier takes at mininum two inputs: `query` and `from`. The `query` argument is a molecular identifier while `from` indicates how the type of identifier used. 
 
-### Query by text string 
+### Query by text string
 Take for instance we want to search for the chemical Microcystin-LR by its abbreviation, MCLR. 
 ```{r, eval = T}
 mona_query(query = 'MCLR', from = 'text')
 ```
 
-### Query by chemical name 
+### Query by chemical name
 Alternatively, we can search by name. 
 ```{r, eval=T}
 mona_query(query = 'Microcystin-LR', from = 'name')
 ```
 
-### Query by InChI Key 
+### Query by InChI Key
 Since names and abbreviations are not standardized, it is useful to be able to query by a unique identifier related to the target chemicals structure. The ideal identifier for this purpose is the International Chemical Identifier (InChI) in hashed form, which is also known as an InChI Key. The InChI Key encodes all the structural information (type, position and arrangement of elements in a molecule) in a 27-digit string. 
 
 ```{r, eval = T}
@@ -65,20 +57,20 @@ In instances where the target molecule has several stereo isomers, all isomer ma
 mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey')
 ```
 
-### Query by molecular formula 
+### Query by molecular formula
 To retrieve all the extant structural isomers molecule, we can search by molecular formula. 
 
 ```{r, eval = T}
 mona_query(query = 'C49H74N10O12', from = 'molform')
 ```
 
-### Query by exact mass 
+### Query by exact mass
 Alternatively the exact mass can be used. 
 ```{r, eval = T}
 mona_query(query = 994.5488, from = 'mass', mass_tol_Da = 0.1)
 ```
 
-### Additional search parameters 
+### Additional search parameters
 Queries can be further constrained to specific types of spectra by passing arguments to `ionization`, `ms_level`, and `source_introduction`. When searching by exact mass, `mass_tol_Da` designates the allowed mass error in Daltons. 
 
 To search only for MS^2^ spectra
@@ -98,7 +90,7 @@ mona_query(
   
 ```
 
-## Query by mass spectrum 
+## Query by mass spectrum
 Spectral library searching, using tandem mass spectrometry data, is useful for annotating the structure of unknown chemicals detected by mass spectrometry. MoNA queries by mass spectra return similar spectra, along with their associated chemical information. 
 
 Spectra can be provided as a `data.frame` or `matrix`. For example:
@@ -121,11 +113,15 @@ mona_querySpec(
 )
 ```
 
-# Working with results 
+# Working with results
+
 Queries to MoNA return all results a single tibble. Various helper functions are provided for accessing the various parts of the query results. Query results consist of meta data that describes the experimetnal conditions that the library spectra were acquired under, chemical information in the form of structural and molecular representations and identifiers, and spectral data. 
-## Getting meta data 
+
+## Getting meta data
+
 Various aspects of the meta data can be extracted from identifier and spectra queries. 
-### Identifier queries 
+
+### Identifier queries
 
 ```{r}
 id_query_rst <- mona_query('atrazine', 'name')
@@ -155,7 +151,7 @@ mona_getMeta(id_query_rst, var = 'name', value = 'ms level')
 ```{r}
 mona_getMeta(id_query_rst, var = 'name', value = 'mass error')
 ```
-### Spectrum queries 
+### Spectrum queries
 ```{r}
 spec_query_rst <-
   mona_querySpec(
@@ -177,7 +173,7 @@ mona_getMeta(spec_query_rst, var = 'category', value = 'chromatography')
 mona_getMeta(spec_query_rst, var = 'name', value = 'mass error')
 ```
 
-## Getting chemical data 
+## Getting chemical data
 
 ```{r}
 mona_getChem(id_query_rst, var = 'inchi')
@@ -195,7 +191,7 @@ mona_getChem(id_query_rst, var = 'external id')
 mona_getChem(spec_query_rst, var = 'external id')
 ```
 
-## Getting spectral data 
+## Getting spectral data
 Spectral data is pulled from query results into a list named by spectrum ID. 
 
 ```{r}

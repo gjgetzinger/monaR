@@ -2,6 +2,7 @@
 #' @importFrom tibble tibble
 ## usethis namespace: end
 NULL
+
 #' Pipe operator
 #'
 #' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
