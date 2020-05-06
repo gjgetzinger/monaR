@@ -1,11 +1,4 @@
 An introduction to using the MoNA API with monaR
-===========
-``` r
-devtools::install_github('gjgetzinger/monaR')
-library(monaR)
-library(dplyr)
-```
-
 # Introduction
 
 Mass Bank of North America (MoNA) is a mass spectrometry resources
@@ -37,6 +30,25 @@ its abbreviation, MCLR.
 
 ``` r
 mona_query(query = 'MCLR', from = 'text')
+#> MoNA query by structure/molecule identifier:
+#> query : MCLR 
+#> from : text 
+#> Results:
+#> Observations: 42
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EQ299207", "EQ299206", "EQ299256", "EQ299202", "EQ299252", "EQ299208"…
+#> $ dateCreated <dbl> 1.584040e+12, 1.584040e+12, 1.584040e+12, 1.584040e+12, 1.584040e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[51 x 5]>, <data.frame[58 x 5]>, <data.frame[18 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[31 x 2]>
+#> $ spectrum    <chr> "69.0335:0.979463 70.0651:58.792322 71.0492:1.422030 72.0807:1.039469 …
+#> $ splash      <df[,5]> <data.frame[31 x 5]>
+#> $ submitter   <df[,5]> <data.frame[31 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[31 x 4]>
 ```
 
 ### Query by chemical name
@@ -45,6 +57,25 @@ Alternatively, we can search by name.
 
 ``` r
 mona_query(query = 'Microcystin-LR', from = 'name')
+#> MoNA query by structure/molecule identifier:
+#> query : Microcystin-LR 
+#> from : name 
+#> Results:
+#> Observations: 141
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[31 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[31 x 5]>
+#> $ submitter   <df[,5]> <data.frame[31 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[31 x 4]>
 ```
 
 ### Query by InChI Key
@@ -58,15 +89,55 @@ position and arrangement of elements in a molecule) in a 27-digit
 string.
 
 ``` r
-mona_query(query = 'ZYZCGGRZINLQBL-JCGNTXOTSA-N', from = 'InChIKey')
+mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
+#> MoNA query by structure/molecule identifier:
+#> query : ZYZCGGRZINLQBL-GWRQVWKTSA-N 
+#> from : InChIKey 
+#> Results:
+#> Observations: 29
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[29 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[29 x 5]>
+#> $ submitter   <df[,5]> <data.frame[29 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[29 x 4]>
 ```
 
 In instances where the target molecule has several stereo isomers, all
-isomer matches can be retrieved by queyring by the connectivity part of
-the InChI Key alone, which is encoded in the first 14 character.
+isomer matches can be retrieved by queyring by the connectivity layer of
+the InChI, which is encoded in the first 14 characters of the InChI Key.
+Such a situation might be useful when exact stereochemistry differs
+between databases.
 
 ``` r
 mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey')
+#> MoNA query by structure/molecule identifier:
+#> query : ZYZCGGRZINLQBL 
+#> from : partial_inchikey 
+#> Results:
+#> Observations: 29
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[29 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[29 x 5]>
+#> $ submitter   <df[,5]> <data.frame[29 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[29 x 4]>
 ```
 
 ### Query by molecular formula
@@ -76,6 +147,25 @@ molecular formula.
 
 ``` r
 mona_query(query = 'C49H74N10O12', from = 'molform')
+#> MoNA query by structure/molecule identifier:
+#> query : C49H74N10O12 
+#> from : molform 
+#> Results:
+#> Observations: 29
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[29 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[29 x 5]>
+#> $ submitter   <df[,5]> <data.frame[29 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[29 x 4]>
 ```
 
 ### Query by exact mass
@@ -83,7 +173,27 @@ mona_query(query = 'C49H74N10O12', from = 'molform')
 Alternatively the exact mass can be used.
 
 ``` r
-mona_query(query = 994.5488, from = 'mass')
+mona_query(query = 994.5488, from = 'mass', mass_tol_Da = 0.1)
+#> MoNA query by structure/molecule identifier:
+#> query : 994.5488 
+#> from : mass 
+#> mass_tol_Da : 0.1 
+#> Results:
+#> Observations: 99
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 7]>, <data.frame[1 x 7]>, <data.frame[1 x 7]>, <data…
+#> $ id          <chr> "LipidBlast054403", "LipidBlast448269", "LipidBlast448086", "EA299210"…
+#> $ dateCreated <dbl> 1.487107e+12, 1.557216e+12, 1.557216e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.572246e+12, 1.572262e+12, 1.572262e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.561558e+12, 1.561612e+12, 1.561612e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[12 x 6]>, <data.frame[12 x 6]>, <data.frame[12 x 6]>, <d…
+#> $ annotations <list> [<data.frame[0 x 0]>, <data.frame[0 x 0]>, <data.frame[0 x 0]>, <data…
+#> $ score       <df[,2]> <data.frame[31 x 2]>
+#> $ spectrum    <chr> "309.2424:10.010010 331.2268:10.010010 333.2424:10.010010 589.4257:100…
+#> $ splash      <df[,5]> <data.frame[31 x 5]>
+#> $ submitter   <df[,5]> <data.frame[31 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[31 x 4]>
 ```
 
 ### Additional search parameters
@@ -98,6 +208,26 @@ spectra
 
 ``` r
 mona_query(query = 'ZYZCGGRZINLQBL', from = 'InChIKey', ms_level = 'MS2')
+#> MoNA query by structure/molecule identifier:
+#> query : ZYZCGGRZINLQBL 
+#> from : partial_inchikey 
+#> ms_level : MS2 
+#> Results:
+#> Observations: 29
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[29 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[29 x 5]>
+#> $ submitter   <df[,5]> <data.frame[29 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[29 x 4]>
 ```
 
 To search for MS<sup>2</sup> spectra only in positive ion mode collected
@@ -111,7 +241,28 @@ mona_query(
   ionization = 'positive',
   source_introduction = 'LC-MS'
   )
-  
+#> MoNA query by structure/molecule identifier:
+#> query : ZYZCGGRZINLQBL 
+#> from : partial_inchikey 
+#> ionization : positive 
+#> ms_level : MS2 
+#> source_introduction : LC-MS 
+#> Results:
+#> Observations: 23
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 8]>, <data.frame[1 x 8]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "EA299210", "EA299203", "EA299204", "EA299211", "EA299205", "EA299212"…
+#> $ dateCreated <dbl> 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, 1.487111e+12, …
+#> $ lastUpdated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ lastCurated <dbl> 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, 1.584674e+12, …
+#> $ metaData    <list> [<data.frame[30 x 6]>, <data.frame[30 x 6]>, <data.frame[30 x 6]>, <d…
+#> $ annotations <list> [<data.frame[53 x 5]>, <data.frame[35 x 5]>, <data.frame[59 x 5]>, <d…
+#> $ score       <df[,2]> <data.frame[23 x 2]>
+#> $ spectrum    <chr> "70.065:16.558562 84.0443:6.200376 86.0963:16.435100 93.0697:3.403519 …
+#> $ splash      <df[,5]> <data.frame[23 x 5]>
+#> $ submitter   <df[,5]> <data.frame[23 x 5]>
+#> $ tags        <list> [<data.frame[2 x 2]>, <data.frame[2 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[23 x 4]>
 ```
 
 ## Query by mass spectrum
@@ -147,35 +298,17 @@ atrazine_ms2
 
 ``` r
 mona_querySpec(spectrum = atrazine_ms2)
-#> # A tibble: 19 x 2
-#>    hit$compound $id   $dateCreated $lastUpdated $lastCurated $metaData
-#>  * <list>       <chr>        <dbl>        <dbl>        <dbl> <list>   
-#>  1 <df[,8] [1 … EA02…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  2 <df[,8] [1 … EA02…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  3 <df[,8] [1 … AU31…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  4 <df[,8] [1 … JP00…      1.49e12      1.58e12      1.58e12 <df[,5] …
-#>  5 <df[,8] [1 … SM84…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  6 <df[,7] [1 … VF-N…      1.54e12      1.56e12      1.56e12 <df[,6] …
-#>  7 <df[,8] [1 … UF40…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  8 <df[,8] [1 … UA00…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#>  9 <df[,8] [1 … UF40…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 10 <df[,7] [1 … VF-N…      1.54e12      1.56e12      1.56e12 <df[,6] …
-#> 11 <df[,8] [1 … EA06…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 12 <df[,8] [1 … EA06…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 13 <df[,8] [1 … MoNA…      1.55e12      1.56e12      1.56e12 <df[,4] …
-#> 14 <df[,6] [1 … CCMS…      1.52e12      1.58e12      1.58e12 <df[,6] …
-#> 15 <df[,8] [1 … MoNA…      1.55e12      1.56e12      1.56e12 <df[,4] …
-#> 16 <df[,7] [1 … VF-N…      1.54e12      1.58e12      1.58e12 <df[,6] …
-#> 17 <df[,8] [1 … HMDB…      1.52e12      1.58e12      1.58e12 <df[,5] …
-#> 18 <df[,8] [1 … JP00…      1.49e12      1.58e12      1.58e12 <df[,5] …
-#> 19 <df[,8] [1 … MoNA…      1.55e12      1.56e12      1.56e12 <df[,4] …
-#> # … with 21 more variables: $annotations <list>, $score$impacts <list>,
-#> #   $$score <dbl>, $spectrum <chr>, $splash$block1 <chr>, $$block2 <chr>,
-#> #   $$block3 <chr>, $$block4 <chr>, $$splash <chr>, $submitter$id <chr>,
-#> #   $$emailAddress <chr>, $$firstName <chr>, $$lastName <chr>,
-#> #   $$institution <chr>, $tags <list>, $library$library <chr>,
-#> #   $$description <chr>, $$link <chr>, $$tag$ruleBased <lgl>, $$$text <chr>,
-#> #   score <dbl>
+#> MoNA query by mass spectrum:
+#> spectrum 
+#> Observations: 15
+#> Variables: 2
+#> $ mz        <dbl> 68.0244, 71.0604, 79.0058, 96.0557, 104.0011, 110.0461, 132.0324, 138.07…
+#> $ intensity <dbl> 3.544857, 0.484472, 3.321822, 6.234326, 6.368015, 0.127197, 5.097925, 1.…
+#> Results:
+#> Observations: 19
+#> Variables: 2
+#> $ hit   <df[,13]> <data.frame[19 x 13]>
+#> $ score <dbl> 0.9999993, 0.9481762, 0.8601510, 0.8161209, 0.7705179, 0.7534919, 0.7504205,…
 ```
 
 Additional limiters can be provided by designating a minimum spectral
@@ -192,25 +325,20 @@ mona_querySpec(
   precursorMZ = 216,
   precursorToleranceDa = 1
 )
-#> # A tibble: 9 x 2
-#>   hit$compound $id   $dateCreated $lastUpdated $lastCurated $metaData
-#> * <list>       <chr>        <dbl>        <dbl>        <dbl> <list>   
-#> 1 <df[,8] [1 … EA02…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 2 <df[,8] [1 … EA02…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 3 <df[,8] [1 … AU31…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 4 <df[,8] [1 … SM84…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 5 <df[,7] [1 … VF-N…      1.54e12      1.56e12      1.56e12 <df[,6] …
-#> 6 <df[,8] [1 … UF40…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 7 <df[,8] [1 … UA00…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 8 <df[,8] [1 … UF40…      1.49e12      1.58e12      1.58e12 <df[,6] …
-#> 9 <df[,7] [1 … VF-N…      1.54e12      1.56e12      1.56e12 <df[,6] …
-#> # … with 21 more variables: $annotations <list>, $score$impacts <list>,
-#> #   $$score <dbl>, $spectrum <chr>, $splash$block1 <chr>, $$block2 <chr>,
-#> #   $$block3 <chr>, $$block4 <chr>, $$splash <chr>, $submitter$id <chr>,
-#> #   $$emailAddress <chr>, $$firstName <chr>, $$lastName <chr>,
-#> #   $$institution <chr>, $tags <list>, $library$library <chr>,
-#> #   $$description <chr>, $$link <chr>, $$tag$ruleBased <lgl>, $$$text <chr>,
-#> #   score <dbl>
+#> MoNA query by mass spectrum:
+#> spectrum 
+#> Observations: 15
+#> Variables: 2
+#> $ mz        <dbl> 68.0244, 71.0604, 79.0058, 96.0557, 104.0011, 110.0461, 132.0324, 138.07…
+#> $ intensity <dbl> 3.544857, 0.484472, 3.321822, 6.234326, 6.368015, 0.127197, 5.097925, 1.…
+#> minSimilarity : 800 
+#> precursorMZ : 216 
+#> precursorToleranceDa : 1 
+#> Results:
+#> Observations: 9
+#> Variables: 2
+#> $ hit   <df[,13]> <data.frame[9 x 13]>
+#> $ score <dbl> 0.9999993, 0.9481762, 0.8601510, 0.7705179, 0.7534919, 0.7504205, 0.7492475,…
 ```
 
 # Working with results
@@ -220,130 +348,109 @@ functions are provided for accessing the various parts of the query
 results. Query results consist of meta data that describes the
 experimetnal conditions that the library spectra were acquired under,
 chemical information in the form of structural and molecular
-representations and identifiers, and spectral data. \#\# Getting meta
-data Various aspects of the meta data can be extracted from identifier
-and spectra queries. \#\#\# Identifier
-queries
+representations and identifiers, and spectral data.
+
+## Getting meta data
+
+Various aspects of the meta data can be extracted from identifier and
+spectra queries.
+
+### Identifier queries
 
 ``` r
 id_query_rst <- mona_query('atrazine', 'name')
+id_query_rst
+#> MoNA query by structure/molecule identifier:
+#> query : atrazine 
+#> from : name 
+#> Results:
+#> Observations: 181
+#> Variables: 13
+#> $ compound    <list> [<data.frame[1 x 7]>, <data.frame[1 x 7]>, <data.frame[1 x 8]>, <data…
+#> $ id          <chr> "VF-NPL-QEHF000343", "VF-NPL-LTQ000149", "MSJ01072", "EA028801", "SM84…
+#> $ dateCreated <dbl> 1.536935e+12, 1.536941e+12, 1.487112e+12, 1.487111e+12, 1.487115e+12, …
+#> $ lastUpdated <dbl> 1.561569e+12, 1.578459e+12, 1.584678e+12, 1.584678e+12, 1.584672e+12, …
+#> $ lastCurated <dbl> 1.561569e+12, 1.578459e+12, 1.584678e+12, 1.584678e+12, 1.584672e+12, …
+#> $ metaData    <list> [<data.frame[13 x 6]>, <data.frame[16 x 6]>, <data.frame[21 x 6]>, <d…
+#> $ score       <df[,2]> <data.frame[31 x 2]>
+#> $ spectrum    <chr> "51.275423:0.031215 51.688508:0.024809 52.610785:0.048546 53.581152:0.…
+#> $ splash      <df[,5]> <data.frame[31 x 5]>
+#> $ submitter   <df[,5]> <data.frame[31 x 5]>
+#> $ tags        <list> [<data.frame[3 x 2]>, <data.frame[3 x 2]>, <data.frame[2 x 2]>, <data…
+#> $ library     <df[,4]> <data.frame[31 x 4]>
+#> $ annotations <list> [NULL, NULL, NULL, <data.frame[12 x 5]>, <data.frame[17 x 5]>, NULL, …
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'category', value = 'mass spectrometry')
-#> # A tibble: 173 x 11
-#> # Groups:   id [173]
-#>    id    `collision ener… `fragmentation … ionization `ionization ene…
-#>    <chr> <chr>            <chr>            <chr>      <chr>           
-#>  1 AU20… 10 eV            CID              ESI        <NA>            
-#>  2 AU20… 20 eV            CID              ESI        <NA>            
-#>  3 AU20… 30 eV            CID              ESI        <NA>            
-#>  4 AU20… 40 eV            CID              ESI        <NA>            
-#>  5 AU20… 10 eV            CID              ESI        <NA>            
-#>  6 AU25… 10 eV            CID              ESI        <NA>            
-#>  7 AU25… 20 eV            CID              ESI        <NA>            
-#>  8 AU25… 30 eV            CID              ESI        <NA>            
-#>  9 AU25… 40 eV            CID              ESI        <NA>            
-#> 10 AU25… 50 eV            CID              ESI        <NA>            
-#> # … with 163 more rows, and 6 more variables: `ionization mode` <chr>, `mass
-#> #   accuracy_ppm` <dbl>, `mass error_Da` <dbl>, `ms level` <chr>, `precursor
-#> #   type` <chr>, resolution <dbl>
+#> Observations: 173
+#> Variables: 11
+#> Groups: id [173]
+#> $ id                   <chr> "AU202201", "AU202302", "AU202303", "AU202304", "AU202351", "…
+#> $ `collision energy`   <chr> "10 eV", "20 eV", "30 eV", "40 eV", "10 eV", "10 eV", "20 eV"…
+#> $ `fragmentation mode` <chr> "CID", "CID", "CID", "CID", "CID", "CID", "CID", "CID", "CID"…
+#> $ ionization           <chr> "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI"…
+#> $ `ionization energy`  <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+#> $ `ionization mode`    <chr> "positive", "positive", "positive", "positive", "negative", "…
+#> $ `mass accuracy_ppm`  <dbl> 0.008163109, 0.211471127, 0.211471127, 0.211471127, 0.0953541…
+#> $ `mass error_Da`      <dbl> 1.1920e-06, -3.5972e-05, -3.5972e-05, -3.5972e-05, 1.6028e-05…
+#> $ `ms level`           <chr> "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2"…
+#> $ `precursor type`     <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+#> $ resolution           <dbl> 35000, 35000, 35000, 35000, 35000, 35000, 35000, 35000, 35000…
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'category', value = 'focused ion')
-#> # A tibble: 160 x 4
-#> # Groups:   id [160]
-#>    id       `ion type` `precursor m/z` `precursor type`
-#>    <chr>    <chr>                <dbl> <chr>           
-#>  1 JP010417 [M]+*                  NA  <NA>            
-#>  2 MSJ01072 [M]+*                 215. <NA>            
-#>  3 AU202201 <NA>                  146. [M+H]+          
-#>  4 AU202302 <NA>                  170. [M+H]+          
-#>  5 AU202303 <NA>                  170. [M+H]+          
-#>  6 AU202304 <NA>                  170. [M+H]+          
-#>  7 AU202351 <NA>                  168. [M-H]-          
-#>  8 AU253701 <NA>                  188. [M+H]+          
-#>  9 AU253702 <NA>                  188. [M+H]+          
-#> 10 AU253703 <NA>                  188. [M+H]+          
-#> # … with 150 more rows
+#> Observations: 160
+#> Variables: 4
+#> Groups: id [160]
+#> $ id               <chr> "JP010417", "MSJ01072", "AU202201", "AU202302", "AU202303", "AU20…
+#> $ `ion type`       <chr> "[M]+*", "[M]+*", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+#> $ `precursor m/z`  <dbl> NA, 215.0900, 146.0228, 170.1036, 170.1036, 170.1036, 168.0891, 1…
+#> $ `precursor type` <chr> NA, NA, "[M+H]+", "[M+H]+", "[M+H]+", "[M+H]+", "[M-H]-", "[M+H]+…
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'category', value = 'chromatography')
-#> # A tibble: 148 x 9
-#> # Groups:   id [148]
-#>    id    column `column tempera… `flow gradient` `flow rate` `injection temp…
-#>    <chr> <chr>  <chr>            <chr>           <chr>       <chr>           
-#>  1 AU20… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  2 AU20… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  3 AU20… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  4 AU20… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  5 AU20… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  6 AU25… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  7 AU25… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  8 AU25… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#>  9 AU25… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#> 10 AU25… Accla… <NA>             99/1 at 0-1 mi… 200 uL/min… <NA>            
-#> # … with 138 more rows, and 3 more variables: `retention time` <chr>, `SOLVENT
-#> #   A` <chr>, `SOLVENT B` <chr>
+#> Observations: 148
+#> Variables: 9
+#> Groups: id [148]
+#> $ id                      <chr> "AU202201", "AU202302", "AU202303", "AU202304", "AU202351"…
+#> $ column                  <chr> "Acclaim RSLC C18 2.2um, 2.1x100mm, Thermo", "Acclaim RSLC…
+#> $ `column temperature`    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+#> $ `flow gradient`         <chr> "99/1 at 0-1 min, 61/39 at 3 min, 0.1/99.9 at 14-16 min, 9…
+#> $ `flow rate`             <chr> "200 uL/min at 0-3 min, 400 uL/min at 14 min, 480 uL/min a…
+#> $ `injection temperature` <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+#> $ `retention time`        <chr> "2.878 min", "2.8 min", "2.8 min", "2.9 min", "3.483 min",…
+#> $ `SOLVENT A`             <chr> "90:10 water:methanol with 0.01% formic acid and 5mM ammon…
+#> $ `SOLVENT B`             <chr> "methanol with 0.01% formic acid and 5mM ammonium formate"…
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'name', value = 'ionization')
-#> # A tibble: 148 x 2
-#> # Groups:   id [148]
-#>    id       ionization
-#>    <chr>    <chr>     
-#>  1 AU202201 ESI       
-#>  2 AU202302 ESI       
-#>  3 AU202303 ESI       
-#>  4 AU202304 ESI       
-#>  5 AU202351 ESI       
-#>  6 AU253701 ESI       
-#>  7 AU253702 ESI       
-#>  8 AU253703 ESI       
-#>  9 AU253704 ESI       
-#> 10 AU253705 ESI       
-#> # … with 138 more rows
+#> Observations: 148
+#> Variables: 2
+#> Groups: id [148]
+#> $ id         <chr> "AU202201", "AU202302", "AU202303", "AU202304", "AU202351", "AU253701",…
+#> $ ionization <chr> "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "…
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'name', value = 'ms level')
-#> # A tibble: 179 x 2
-#> # Groups:   id [179]
-#>    id       `ms level`
-#>    <chr>    <chr>     
-#>  1 AU202201 MS2       
-#>  2 AU202302 MS2       
-#>  3 AU202303 MS2       
-#>  4 AU202304 MS2       
-#>  5 AU202351 MS2       
-#>  6 AU253701 MS2       
-#>  7 AU253702 MS2       
-#>  8 AU253703 MS2       
-#>  9 AU253704 MS2       
-#> 10 AU253705 MS2       
-#> # … with 169 more rows
+#> Observations: 179
+#> Variables: 2
+#> Groups: id [179]
+#> $ id         <chr> "AU202201", "AU202302", "AU202303", "AU202304", "AU202351", "AU253701",…
+#> $ `ms level` <chr> "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "…
 ```
 
 ``` r
 mona_getMeta(id_query_rst, var = 'name', value = 'mass error')
-#> # A tibble: 172 x 2
-#> # Groups:   id [172]
-#>    id       `mass error_Da`
-#>    <chr>              <dbl>
-#>  1 AU202201      0.00000119
-#>  2 AU202302     -0.0000360 
-#>  3 AU202303     -0.0000360 
-#>  4 AU202304     -0.0000360 
-#>  5 AU202351      0.0000160 
-#>  6 AU253701     -0.0000490 
-#>  7 AU253702     -0.0000490 
-#>  8 AU253703     -0.0000490 
-#>  9 AU253704     -0.0000490 
-#> 10 AU253705     -0.0000490 
-#> # … with 162 more rows
+#> Observations: 172
+#> Variables: 2
+#> Groups: id [172]
+#> $ id              <chr> "AU202201", "AU202302", "AU202303", "AU202304", "AU202351", "AU253…
+#> $ `mass error_Da` <dbl> 1.1920e-06, -3.5972e-05, -3.5972e-05, -3.5972e-05, 1.6028e-05, -4.…
 ```
 
 ### Spectrum queries
@@ -360,124 +467,87 @@ spec_query_rst <-
 
 ``` r
 mona_getMeta(spec_query_rst, var = 'category', value = 'mass spectrometry')
-#> # A tibble: 9 x 9
-#> # Groups:   id [9]
-#>   id    `collision ener… `fragmentation … ionization `ionization mod…
-#>   <chr> <chr>            <chr>            <chr>      <chr>           
-#> 1 AU31… 20 eV            CID              ESI        positive        
-#> 2 EA02… 45 % (nominal)   HCD              ESI        positive        
-#> 3 EA02… 45 % (nominal)   HCD              ESI        positive        
-#> 4 SM84… 35  (nominal)    HCD              ESI        positive        
-#> 5 UA00… 35 % (nominal)   CID              ESI        positive        
-#> 6 UF40… 55 (nominal)     HCD              ESI        positive        
-#> 7 UF40… 35 (nominal)     CID              ESI        positive        
-#> 8 VF-N… <NA>             <NA>             <NA>       <NA>            
-#> 9 VF-N… <NA>             <NA>             <NA>       <NA>            
-#> # … with 4 more variables: `mass accuracy_ppm` <dbl>, `mass error_Da` <dbl>,
-#> #   `ms level` <chr>, resolution <dbl>
+#> Observations: 9
+#> Variables: 9
+#> Groups: id [9]
+#> $ id                   <chr> "AU310902", "EA028804", "EA028810", "SM841401", "UA002901", "…
+#> $ `collision energy`   <chr> "20 eV", "45 % (nominal)", "45 % (nominal)", "35  (nominal)",…
+#> $ `fragmentation mode` <chr> "CID", "HCD", "HCD", "HCD", "CID", "HCD", "CID", NA, NA
+#> $ ionization           <chr> "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", "ESI", NA, NA
+#> $ `ionization mode`    <chr> "positive", "positive", "positive", "positive", "positive", "…
+#> $ `mass accuracy_ppm`  <dbl> 0.2273381, 0.2273381, 0.2273381, 0.2273381, 0.2273381, 0.2273…
+#> $ `mass error_Da`      <dbl> -4.91280e-05, -4.91280e-05, -4.91280e-05, -4.91280e-05, -4.91…
+#> $ `ms level`           <chr> "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", "MS2", NA, NA
+#> $ resolution           <dbl> 35000, 7500, 15000, 35000, 30000, 15000, 15000, NA, NA
 ```
 
 ``` r
 mona_getMeta(spec_query_rst, var = 'category', value = 'chromatography')
-#> # A tibble: 7 x 7
-#> # Groups:   id [7]
-#>   id    column `flow gradient` `flow rate` `retention time` `SOLVENT A`
-#>   <chr> <chr>  <chr>           <chr>       <chr>            <chr>      
-#> 1 AU31… Accla… 99/1 at 0-1 mi… 200 uL/min… 8.0 min          90:10 wate…
-#> 2 EA02… XBrid… 90/10 at 0 min… 200 ul/min  8.3 min          water with…
-#> 3 EA02… XBrid… 90/10 at 0 min… 200 ul/min  8.3 min          water with…
-#> 4 SM84… Kinet… 95/5 at 0 min,… 300 uL/min  9.936 min        water with…
-#> 5 UA00… N/A    Direct infusio… 5 uL/min    N/A min          methanol   
-#> 6 UF40… Kinet… 90/10 at 0 min… 200 uL/min  23.294 min       water with…
-#> 7 UF40… Kinet… 90/10 at 0 min… 200 uL/min  23.294 min       water with…
-#> # … with 1 more variable: `SOLVENT B` <chr>
+#> Observations: 7
+#> Variables: 7
+#> Groups: id [7]
+#> $ id               <chr> "AU310902", "EA028804", "EA028810", "SM841401", "UA002901", "UF40…
+#> $ column           <chr> "Acclaim RSLC C18 2.2um, 2.1x100mm, Thermo", "XBridge C18 3.5um, …
+#> $ `flow gradient`  <chr> "99/1 at 0-1 min, 61/39 at 3 min, 0.1/99.9 at 14-16 min, 99/1 at …
+#> $ `flow rate`      <chr> "200 uL/min at 0-3 min, 400 uL/min at 14 min, 480 uL/min at 16-19…
+#> $ `retention time` <chr> "8.0 min", "8.3 min", "8.3 min", "9.936 min", "N/A min", "23.294 …
+#> $ `SOLVENT A`      <chr> "90:10 water:methanol with 0.01% formic acid and 5mM ammonium for…
+#> $ `SOLVENT B`      <chr> "methanol with 0.01% formic acid and 5mM ammonium formate", "meth…
 ```
 
 ``` r
 mona_getMeta(spec_query_rst, var = 'name', value = 'mass error')
-#> # A tibble: 9 x 2
-#> # Groups:   id [9]
-#>   id                `mass error_Da`
-#>   <chr>                       <dbl>
-#> 1 AU310902               -0.0000491
-#> 2 EA028804               -0.0000491
-#> 3 EA028810               -0.0000491
-#> 4 SM841401               -0.0000491
-#> 5 UA002901               -0.0000491
-#> 6 UF403301               -0.0000491
-#> 7 UF403303               -0.0000491
-#> 8 VF-NPL-QEHF000346      -0.0000512
-#> 9 VF-NPL-QEHF000347      -0.0000512
+#> Observations: 9
+#> Variables: 2
+#> Groups: id [9]
+#> $ id              <chr> "AU310902", "EA028804", "EA028810", "SM841401", "UA002901", "UF403…
+#> $ `mass error_Da` <dbl> -4.91280e-05, -4.91280e-05, -4.91280e-05, -4.91280e-05, -4.91280e-…
 ```
 
 ## Getting chemical data
 
 ``` r
 mona_getChem(id_query_rst, var = 'inchi')
-#> # A tibble: 181 x 2
-#>    id              inchi                                                        
-#>    <chr>           <chr>                                                        
-#>  1 VF-NPL-QEHF000… InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  2 VF-NPL-LTQ0001… InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  3 MSJ01072        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  4 EA028801        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  5 SM841401        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  6 JP010417        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  7 UA002901        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  8 VF-NPL-QEHF000… InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#>  9 EA028802        InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#> 10 VF-NPL-QEHF000… InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4…
-#> # … with 171 more rows
+#> Observations: 181
+#> Variables: 2
+#> $ id    <chr> "VF-NPL-QEHF000343", "VF-NPL-LTQ000149", "MSJ01072", "EA028801", "SM841401",…
+#> $ inchi <chr> "InChI=1S/C8H14ClN5/c1-4-10-7-12-6(9)13-8(14-7)11-5(2)3/h5H,4H2,1-3H3,(H2,10…
 ```
 
 ``` r
 mona_getChem(spec_query_rst, var = 'inchiKey')
-#> # A tibble: 9 x 2
-#>   id                inchiKey                   
-#>   <chr>             <chr>                      
-#> 1 EA028810          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 2 EA028804          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 3 AU310902          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 4 SM841401          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 5 VF-NPL-QEHF000346 <NA>                       
-#> 6 UF403301          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 7 UA002901          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 8 UF403303          MXWJVTOOROXGIU-UHFFFAOYSA-N
-#> 9 VF-NPL-QEHF000347 <NA>
+#> Observations: 9
+#> Variables: 2
+#> $ id       <chr> "EA028810", "EA028804", "AU310902", "SM841401", "VF-NPL-QEHF000346", "UF4…
+#> $ inchiKey <chr> "MXWJVTOOROXGIU-UHFFFAOYSA-N", "MXWJVTOOROXGIU-UHFFFAOYSA-N", "MXWJVTOORO…
 ```
 
 ``` r
 mona_getChem(id_query_rst, var = 'external id')
-#> # A tibble: 161 x 8
-#> # Groups:   id [161]
-#>    id      `pubchem cid` cas   chebi kegg  chemspider `cas number` `pubchem sid`
-#>    <chr>   <chr>         <chr> <chr> <chr> <chr>      <chr>        <chr>        
-#>  1 MSJ010… 2256          <NA>  <NA>  <NA>  <NA>       <NA>         <NA>         
-#>  2 EA0288… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#>  3 SM8414… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#>  4 UA0029… 2256          1912… <NA>  C065… 2169       <NA>         <NA>         
-#>  5 EA0288… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#>  6 HMDB00… <NA>          <NA>  <NA>  <NA>  <NA>       1912-24-9    <NA>         
-#>  7 UF4033… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#>  8 EA0288… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#>  9 EA0288… 2256          1912… 15930 C065… 2169       <NA>         <NA>         
-#> 10 HMDB00… <NA>          <NA>  <NA>  <NA>  <NA>       1912-24-9    <NA>         
-#> # … with 151 more rows
+#> Observations: 161
+#> Variables: 8
+#> Groups: id [161]
+#> $ id            <chr> "MSJ01072", "EA028801", "SM841401", "UA002901", "EA028802", "HMDB004…
+#> $ `pubchem cid` <chr> "2256", "2256", "2256", "2256", "2256", NA, "2256", "2256", "2256", …
+#> $ cas           <chr> NA, "1912-24-9", "1912-24-9", "1912-24-9", "1912-24-9", NA, "1912-24…
+#> $ chebi         <chr> NA, "15930", "15930", NA, "15930", NA, "15930", "15930", "15930", NA…
+#> $ kegg          <chr> NA, "C06551", "C06551", "C06551", "C06551", NA, "C06551", "C06551", …
+#> $ chemspider    <chr> NA, "2169", "2169", "2169", "2169", NA, "2169", "2169", "2169", NA, …
+#> $ `cas number`  <chr> NA, NA, NA, NA, NA, "1912-24-9", NA, NA, NA, "1912-24-9", NA, NA, NA…
+#> $ `pubchem sid` <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
 ```
 
 ``` r
 mona_getChem(spec_query_rst, var = 'external id')
-#> # A tibble: 7 x 6
-#> # Groups:   id [7]
-#>   id       cas       chebi kegg   `pubchem cid` chemspider
-#>   <chr>    <chr>     <chr> <chr>  <chr>         <chr>     
-#> 1 EA028810 1912-24-9 15930 C06551 2256          2169      
-#> 2 EA028804 1912-24-9 15930 C06551 2256          2169      
-#> 3 AU310902 1912-24-9 15930 C06551 2256          2169      
-#> 4 SM841401 1912-24-9 15930 C06551 2256          2169      
-#> 5 UF403301 1912-24-9 15930 C06551 2256          2169      
-#> 6 UA002901 1912-24-9 <NA>  C06551 2256          2169      
-#> 7 UF403303 1912-24-9 15930 C06551 2256          2169
+#> Observations: 7
+#> Variables: 6
+#> Groups: id [7]
+#> $ id            <chr> "EA028810", "EA028804", "AU310902", "SM841401", "UF403301", "UA00290…
+#> $ cas           <chr> "1912-24-9", "1912-24-9", "1912-24-9", "1912-24-9", "1912-24-9", "19…
+#> $ chebi         <chr> "15930", "15930", "15930", "15930", "15930", NA, "15930"
+#> $ kegg          <chr> "C06551", "C06551", "C06551", "C06551", "C06551", "C06551", "C06551"
+#> $ `pubchem cid` <chr> "2256", "2256", "2256", "2256", "2256", "2256", "2256"
+#> $ chemspider    <chr> "2169", "2169", "2169", "2169", "2169", "2169", "2169"
 ```
 
 ## Getting spectral data
@@ -487,133 +557,44 @@ ID.
 
 ``` r
 mona_getSpec(slice(id_query_rst,1))
-#> $`VF-NPL-QEHF000343`
-#> # A tibble: 538 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  51.3    0.0312
-#>  2  51.7    0.0248
-#>  3  52.6    0.0485
-#>  4  53.6    0.0425
-#>  5  54.2    0.0478
-#>  6  54.3    0.0446
-#>  7  54.5    0.0276
-#>  8  55.0    0.0264
-#>  9  55.2    0.0281
-#> 10  56.0    0.0407
-#> # … with 528 more rows
+#> List of 1
+#>  $ VF-NPL-QEHF000343:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':  538 obs. of  2 variables:
+#>   ..$ mz       : num [1:538] 51.3 51.7 52.6 53.6 54.2 ...
+#>   ..$ intensity: num [1:538] 0.0312 0.0248 0.0485 0.0425 0.0478 ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
 
 ``` r
 mona_getSpec(slice(spec_query_rst, 1))
-#> $EA028810
-#> # A tibble: 16 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  62.0     0.157
-#>  2  68.0     3.54 
-#>  3  71.1     0.484
-#>  4  79.0     3.32 
-#>  5  96.1     6.23 
-#>  6 104.      6.37 
-#>  7 110.      0.127
-#>  8 132.      5.10 
-#>  9 138.      1.58 
-#> 10 138.      0.881
-#> 11 146.      3.58 
-#> 12 146.      0.722
-#> 13 174.    100    
-#> 14 180.      0.418
-#> 15 188.      0.638
-#> 16 216.     86.4
+#> List of 1
+#>  $ EA028810:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   16 obs. of  2 variables:
+#>   ..$ mz       : num [1:16] 62 68 71.1 79 96.1 ...
+#>   ..$ intensity: num [1:16] 0.157 3.545 0.484 3.322 6.234 ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
 
 ``` r
 mona_getSpec(filter(spec_query_rst, spec_query_rst$hit$id == 'SM841401'))
-#> $SM841401
-#> # A tibble: 17 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  68.0     2.84 
-#>  2  71.1     1.65 
-#>  3  79.0     8.00 
-#>  4  85.1     0.137
-#>  5  90.0     0.253
-#>  6  96.1    11.1  
-#>  7 104.      7.58 
-#>  8 110.      0.687
-#>  9 132.      7.97 
-#> 10 138.      2.07 
-#> 11 138.      1.35 
-#> 12 146.      5.86 
-#> 13 146.      1.07 
-#> 14 174.     61.7  
-#> 15 180.      0.218
-#> 16 188.      0.361
-#> 17 216.    100
+#> List of 1
+#>  $ SM841401:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   17 obs. of  2 variables:
+#>   ..$ mz       : num [1:17] 68 71.1 79 85.1 90 ...
+#>   ..$ intensity: num [1:17] 2.841 1.645 8 0.137 0.253 ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
 
 ``` r
 mona_getSpec(filter(spec_query_rst,spec_query_rst$score > 0.8))
-#> $EA028810
-#> # A tibble: 16 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  62.0     0.157
-#>  2  68.0     3.54 
-#>  3  71.1     0.484
-#>  4  79.0     3.32 
-#>  5  96.1     6.23 
-#>  6 104.      6.37 
-#>  7 110.      0.127
-#>  8 132.      5.10 
-#>  9 138.      1.58 
-#> 10 138.      0.881
-#> 11 146.      3.58 
-#> 12 146.      0.722
-#> 13 174.    100    
-#> 14 180.      0.418
-#> 15 188.      0.638
-#> 16 216.     86.4  
-#> 
-#> $EA028804
-#> # A tibble: 12 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  68.0     2.88 
-#>  2  71.1     0.507
-#>  3  79.0     3.08 
-#>  4  96.1     5.94 
-#>  5 104.      6.85 
-#>  6 132.      5.48 
-#>  7 138.      1.06 
-#>  8 138.      0.852
-#>  9 146.      3.99 
-#> 10 146.      0.798
-#> 11 174.    100    
-#> 12 216.     89.1  
-#> 
-#> $AU310902
-#> # A tibble: 17 x 2
-#>       mz intensity
-#>    <dbl>     <dbl>
-#>  1  132.     5.68 
-#>  2  133.     0.265
-#>  3  134.     1.70 
-#>  4  138.     2.08 
-#>  5  138.     1.60 
-#>  6  146.     4.54 
-#>  7  147.     0.201
-#>  8  148.     1.23 
-#>  9  174.   100    
-#> 10  175.     4.54 
-#> 11  176.    24.9  
-#> 12  177.     0.625
-#> 13  180.     0.658
-#> 14  216.    62.8  
-#> 15  217.     5.13 
-#> 16  218.    15.9  
-#> 17  219.     0.765
+#> List of 3
+#>  $ EA028810:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   16 obs. of  2 variables:
+#>   ..$ mz       : num [1:16] 62 68 71.1 79 96.1 ...
+#>   ..$ intensity: num [1:16] 0.157 3.545 0.484 3.322 6.234 ...
+#>  $ EA028804:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   12 obs. of  2 variables:
+#>   ..$ mz       : num [1:12] 68 71.1 79 96.1 104 ...
+#>   ..$ intensity: num [1:12] 2.88 0.507 3.078 5.937 6.846 ...
+#>  $ AU310902:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   17 obs. of  2 variables:
+#>   ..$ mz       : num [1:17] 132 133 134 138 138 ...
+#>   ..$ intensity: num [1:17] 5.683 0.265 1.7 2.075 1.595 ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
 
 When peak annotations are provided, they can be merged with the spectra
@@ -621,42 +602,26 @@ using the `ann` argument.
 
 ``` r
 mona_getSpec(slice(id_query_rst,150), ann = TRUE)
-#> $AU253902
-#> # A tibble: 10 x 6
-#>       mz intensity category   computed hidden name          
-#>    <dbl>     <dbl> <chr>      <lgl>    <lgl>  <chr>         
-#>  1  132.    27.3   annotation FALSE    FALSE  C4H7ClN3+     
-#>  2  133.     1.21  annotation FALSE    FALSE  C3[13]CH7ClN3+
-#>  3  134.     7.11  annotation FALSE    FALSE  C4H7[37]ClN3+ 
-#>  4  138.     8.41  annotation FALSE    FALSE  C5H8N5+       
-#>  5  139.     0.640 annotation FALSE    FALSE  C4[13]CH8N5+  
-#>  6  146.    15.1   annotation FALSE    FALSE  C3H5ClN5+     
-#>  7  148.     4.79  annotation FALSE    FALSE  C3H5[37]ClN5+ 
-#>  8  174.   100     annotation FALSE    FALSE  C5H9ClN5+     
-#>  9  175.     5.30  annotation FALSE    FALSE  C4[13]CH9ClN5+
-#> 10  176.    28.2   annotation FALSE    FALSE  C5H9[37]ClN5+
+#> List of 1
+#>  $ AU253902:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   10 obs. of  6 variables:
+#>   ..$ mz       : num [1:10] 132 133 134 138 139 ...
+#>   ..$ intensity: num [1:10] 27.29 1.21 7.11 8.41 0.64 ...
+#>   ..$ category : chr [1:10] "annotation" "annotation" "annotation" "annotation" ...
+#>   ..$ computed : logi [1:10] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#>   ..$ hidden   : logi [1:10] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#>   ..$ name     : chr [1:10] "C4H7ClN3+" "C3[13]CH7ClN3+" "C4H7[37]ClN3+" "C5H8N5+" ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
 
 ``` r
 mona_getSpec(slice(spec_query_rst, 1), ann = TRUE)
-#> $EA028810
-#> # A tibble: 16 x 6
-#>       mz intensity category   computed hidden name      
-#>    <dbl>     <dbl> <chr>      <lgl>    <lgl>  <chr>     
-#>  1  62.0     0.157 annotation FALSE    FALSE  CHClN+    
-#>  2  68.0     3.54  annotation FALSE    FALSE  C2H2N3+   
-#>  3  71.1     0.484 annotation FALSE    FALSE  C3H7N2+   
-#>  4  79.0     3.32  annotation FALSE    FALSE  CH4ClN2+  
-#>  5  96.1     6.23  annotation FALSE    FALSE  C4H6N3+   
-#>  6 104.      6.37  annotation FALSE    FALSE  C2H3ClN3+ 
-#>  7 110.      0.127 annotation FALSE    FALSE  C3H4N5+   
-#>  8 132.      5.10  annotation FALSE    FALSE  C4H7ClN3+ 
-#>  9 138.      1.58  annotation FALSE    FALSE  C5H8N5+   
-#> 10 138.      0.881 annotation FALSE    FALSE  C7H12N3+  
-#> 11 146.      3.58  annotation FALSE    FALSE  C3H5ClN5+ 
-#> 12 146.      0.722 annotation FALSE    FALSE  C5H9ClN3+ 
-#> 13 174.    100     annotation FALSE    FALSE  C5H9ClN5+ 
-#> 14 180.      0.418 annotation FALSE    FALSE  C8H14N5+  
-#> 15 188.      0.638 annotation FALSE    FALSE  C6H11ClN5+
-#> 16 216.     86.4   annotation FALSE    FALSE  C8H15ClN5+
+#> List of 1
+#>  $ EA028810:Classes 'tbl_df', 'tbl', 'mass_spectrum' and 'data.frame':   16 obs. of  6 variables:
+#>   ..$ mz       : num [1:16] 62 68 71.1 79 96.1 ...
+#>   ..$ intensity: num [1:16] 0.157 3.545 0.484 3.322 6.234 ...
+#>   ..$ category : chr [1:16] "annotation" "annotation" "annotation" "annotation" ...
+#>   ..$ computed : logi [1:16] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#>   ..$ hidden   : logi [1:16] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#>   ..$ name     : chr [1:16] "CHClN+" "C2H2N3+" "C3H7N2+" "CH4ClN2+" ...
+#>  - attr(*, "class")= chr [1:2] "mona_meta" "list"
 ```
