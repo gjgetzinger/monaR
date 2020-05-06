@@ -1,4 +1,12 @@
-An introduction to using the MoNA API with monaR
+Querying the Mass Bank of North America API with monaR
+================
+
+``` r
+devtools::install_github('gjgetzinger/monaR')
+library(monaR)
+library(dplyr)
+```
+
 # Introduction
 
 Mass Bank of North America (MoNA) is a mass spectrometry resources
