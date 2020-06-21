@@ -61,5 +61,4 @@ NULL
 
 utils::globalVariables(
   c("mz", "intensity", ".", "name", "value", "category", "unit", "id")
-  )
-
+)
