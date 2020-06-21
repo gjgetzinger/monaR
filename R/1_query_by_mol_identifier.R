@@ -18,85 +18,53 @@
 #' @examples 
 #' mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
 #'
-mona_query <-
-  function(query = NULL,
-           from = NULL,
-           mass_tol_Da = NULL,
-           ionization = NULL,
-           ms_level = NULL,
-           source_introduction = NULL) {
-    from <- match.arg(from,
-      c("text", "name", "InChIKey", "molform", "mass"),
-      several.ok = FALSE
-    )
+mona_query <- 
+    function(query = NULL, from = NULL, mass_tol_Da = NULL, 
+      ionization = NULL, ms_level = NULL, source_introduction = NULL) {
+    from <- match.arg(from, c("text", "name", "InChIKey", "molform", "mass"),
+                      several.ok = FALSE)
     stopifnot(c(length(query) == 1, length(from) == 1))
     if (from == "InChIKey") {
       stopifnot(nchar(query) %in% c(14, 27))
-      if (nchar(query) == 14) {
-        from <- "partial_inchikey"
-      }
+      if (nchar(query) == 14) {from <- "partial_inchikey"}
     }
-
     if (from == "mass") {
       if (is.null(mass_tol_Da)) {
         stop("mass_tol_Da must be provided when searching by mass")
       }
       mass_range <- query + c(-1, 1) * mass_tol_Da
     }
-
-    base_url <-
-      "https://mona.fiehnlab.ucdavis.edu/rest/spectra/search"
-
-    if (tolower(from) %in%
-      c("mass", "inchikey", "partial_inchikey", "molform")) {
+    base_url <- "https://mona.fiehnlab.ucdavis.edu/rest/spectra/search"
+    if (tolower(from) %in% 
+        c("mass", "inchikey", "partial_inchikey", "molform")) {
       base_url <- paste0(base_url, "?query=compound.metaData=q='name==")
     }
-
     fmt <- switch(
       tolower(from),
-      text = "?text=%s",
-      name = "?query=compound.names=q='name=like=\"%s\"'",
+      text = "?text=%s", name = "?query=compound.names=q='name=like=\"%s\"'",
       mass = "\"total exact mass\" and value >= %f and value <= %f'",
       inchikey = "\"InChIKey\" and value==\"%s\"'",
       partial_inchikey = "\"InChIKey\" and value=match=\".*%s.*\"'",
       molform = "\"molecular formula\" and value=match=\".*%s.*\"'"
     )
-
-    url <-
-      paste0(base_url, ifelse(
-        from == "mass",
-        sprintf(fmt, mass_range[1], mass_range[2]),
-        sprintf(fmt, query)
-      ))
-
+    url <- paste0(base_url, ifelse(from == "mass", 
+                                   sprintf(fmt, mass_range[1], mass_range[2]),
+                                   sprintf(fmt, query)
+                                   ))
     tags <- get_tags(ionization, ms_level, source_introduction)
-
-    if (length(tags) > 0) {
-      url <- paste(c(url, tags), collapse = " and ")
-    }
+    if (length(tags) > 0) {url <- paste(c(url, tags), collapse = " and ")}
     url <- utils::URLencode(url)
-    resp <-
-      httr::GET(url = url, httr::timeout(getOption("timeout")))
+    resp <- httr::GET(url = url, httr::timeout(getOption("timeout")))
     httr::stop_for_status(resp)
-
     if (resp$status_code == 200) {
       cont <- httr::content(resp, "text")
       parsed <- dplyr::as_tibble(jsonlite::fromJSON(cont))
-    } else {
-      parsed <- NA
-    }
-    attributes(parsed) <-
-      append(
+    } else { parsed <- NA }
+    attributes(parsed) <- append(
         attributes(parsed),
-        list(
-          query = query,
-          from = from,
-          mass_tol_Da = mass_tol_Da,
-          ionization = ionization,
-          ms_level = ms_level,
-          source_introduction = source_introduction
-        )
-      )
+        list( query = query, from = from, mass_tol_Da = mass_tol_Da, 
+              ionization = ionization, ms_level = ms_level, 
+              source_introduction = source_introduction ))
     class(parsed) <- append("mona_id_query", class(parsed))
     return(parsed)
   }
@@ -126,10 +94,7 @@ get_tags <- function(ionization = NULL,
         ionization,
         sprintf,
         fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'",
-        FUN.VALUE = character(1)
-      ),
-      collapse = " or "
-    ), ")")
+        FUN.VALUE = character(1)), collapse = " or " ), ")")
   }
 
   # add ms level
@@ -142,9 +107,7 @@ get_tags <- function(ionization = NULL,
         sprintf,
         fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'",
         FUN.VALUE = character(1)
-      ),
-      collapse = " or "
-    ), ")")
+      ), collapse = " or " ), ")")
   }
 
   # add source introduction
@@ -160,9 +123,7 @@ get_tags <- function(ionization = NULL,
         sprintf,
         fmt = "tags.text==\"%s\"",
         FUN.VALUE = character(1)
-      ),
-      collapse = " or "
-    ), ")")
+      ), collapse = " or " ), ")")
   }
   return(tags)
 }

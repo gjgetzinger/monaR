@@ -13,6 +13,7 @@ NULL
 #' @export
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
+#' @return nothing 
 #' @examples 
 #' 1:10 %>% print
 NULL
@@ -62,5 +63,4 @@ NULL
 
 
 utils::globalVariables(
-  c("mz", "intensity", ".", "name", "value", "category", "unit", "id")
-)
+    c("mz", "intensity", ".", "name", "value", "category", "unit", "id"))

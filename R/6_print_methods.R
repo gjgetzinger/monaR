@@ -1,5 +1,6 @@
 #' print method for id query
 #' @export
+#' @return Prints tibble info from an ID query
 #' @examples
 #' print(example_id_query)
 print.mona_id_query <- function(x, ...) {
@@ -17,6 +18,7 @@ print.mona_id_query <- function(x, ...) {
 
 #' print method for spec query
 #' @export
+#' @return Prints tibble info from a spectrum query 
 #' @examples
 #' print(example_spec_query)
 print.mona_spec_query <- function(x, ...) {
@@ -44,6 +46,7 @@ print.mona_spec_query <- function(x, ...) {
 #' @param ... additional arguments
 #'
 #' @export
+#' @return Prints tibble info from a meta data query
 #' @examples 
 #' print(mona_getMeta(example_id_query, 'category', 'mass spectrometry'))
 print.mona_meta <- function(x, ...) {
