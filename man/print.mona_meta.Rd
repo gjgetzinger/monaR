@@ -14,3 +14,6 @@
 \description{
 print method for meta data
 }
+\examples{
+print(mona_getMeta(example_id_query, 'category', 'mass spectrometry'))
+}

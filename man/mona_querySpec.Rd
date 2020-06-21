@@ -29,3 +29,10 @@ a tibble containing query results
 \description{
 Query MONA API by a mass spectrum
 }
+\examples{
+ 
+   mona_querySpec(
+       spectrum = atrazine_ms2, minSimilarity = 800,
+       precursorMZ = 216, precursorToleranceDa = 1 
+       )
+}

@@ -9,4 +9,7 @@ lhs \%>\% rhs
 \description{
 See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 }
+\examples{
+1:10 \%>\% print
+}
 \keyword{internal}

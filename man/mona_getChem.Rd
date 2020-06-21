@@ -39,8 +39,8 @@ Extract chemical data from MONA queries
 }}
 
 \examples{
-mona_getChem(example_id_query, var = 'inchi')
-mona_getChem(example_id_query, var = 'inchiKey')
-mona_getChem(example_id_query, var = 'external id')
-
+mona_getChem(example_id_query, var = "inchi")
+mona_getChem(example_id_query, var = "inchiKey")
+mona_getChem(example_id_query, var = "external id")
+mona_getChem(example_spec_query, 'inchi')
 }

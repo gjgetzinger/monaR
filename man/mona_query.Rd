@@ -36,3 +36,7 @@ a [tibble][tibble::tibble-package]
 Submit a query to MONA API (https://mona.fiehnlab.ucdavis.edu) by text
 string, molecular formula or (partial) InChI Key.
 }
+\examples{
+mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
+
+}

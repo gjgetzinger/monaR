@@ -15,7 +15,8 @@
 #'
 #' @return a [tibble][tibble::tibble-package]
 #' @export
-#' @example mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
+#' @examples 
+#' mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
 #'
 mona_query <-
   function(query = NULL,
@@ -106,8 +107,11 @@ mona_query <-
 #'
 #' @return A named list of tags to add to a query
 #' @export
-#' @example get_tags(ionization = 'positive', ms_level = "all",
-#'   source_introduction = "LC-MS")
+#' @examples 
+#' get_tags(
+#'    ionization = 'positive', ms_level = "all", 
+#'    source_introduction = "LC-MS"
+#'    )
 #'
 get_tags <- function(ionization = NULL,
                      ms_level = NULL,

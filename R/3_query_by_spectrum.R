@@ -1,6 +1,7 @@
 #' Query MONA API by a mass spectrum
 #'
-#' @param spectrum A spectrum as either a dataframe with variables mz,intensity or a space deliminated stinrg of mz:inensity pairs.
+#' @param spectrum A spectrum as either a dataframe with variables mz,intensity
+#'   or a space deliminated stinrg of mz:inensity pairs.
 #' @param minSimilarity Minimum spectral similarity for searching
 #' @param precursorMZ The precursor ion m/z
 #' @param precursorToleranceDa Search tolerance in dalton
@@ -8,8 +9,11 @@
 #'
 #' @return a tibble containing query results
 #' @export
-#' @example mona_querySpec( spectrum = atrazine_ms2, minSimilarity = 800,
-#'   precursorMZ = 216, precursorToleranceDa = 1 )
+#' @examples  
+#'    mona_querySpec(
+#'        spectrum = atrazine_ms2, minSimilarity = 800,
+#'        precursorMZ = 216, precursorToleranceDa = 1 
+#'        )
 mona_querySpec <-
   function(spectrum = NULL,
            minSimilarity = NULL,

@@ -1,6 +1,7 @@
-# print method for id query
+#' print method for id query
 #' @export
-#' @example print(example_id_query)
+#' @examples
+#' print(example_id_query)
 print.mona_id_query <- function(x, ...) {
   att <- attributes(x)
   cat("MoNA query by structure/molecule identifier:\n")
@@ -14,9 +15,10 @@ print.mona_id_query <- function(x, ...) {
   invisible(x)
 }
 
-# print method for spec query
+#' print method for spec query
 #' @export
-#' @example print(example_spec_query)
+#' @examples
+#' print(example_spec_query)
 print.mona_spec_query <- function(x, ...) {
   att <- attributes(x)
   att <- att[names(att) != "query"]
@@ -42,7 +44,8 @@ print.mona_spec_query <- function(x, ...) {
 #' @param ... additional arguments
 #'
 #' @export
-#' @example print(mona_getMeta(example_id_query, 'category', 'mass spectrometry'))
+#' @examples 
+#' print(mona_getMeta(example_id_query, 'category', 'mass spectrometry'))
 print.mona_meta <- function(x, ...) {
   dplyr::glimpse(x)
   invisible(x)

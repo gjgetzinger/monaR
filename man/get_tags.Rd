@@ -21,3 +21,10 @@ A named list of tags to add to a query
 \description{
 Get tags for query
 }
+\examples{
+get_tags(
+   ionization = 'positive', ms_level = "all", 
+   source_introduction = "LC-MS"
+   )
+
+}

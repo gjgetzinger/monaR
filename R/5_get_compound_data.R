@@ -94,7 +94,8 @@ mona_getChem.mona_id_query <-
 
 #' @describeIn mona_getChem Extract meta data from spectrum queries
 #' @export
-#' @example mona_getChem(example_spec_query, 'inchi')
+#' @examples
+#' mona_getChem(example_spec_query, 'inchi')
 mona_getChem.mona_spec_query <- function(df,
                                          var = c(
                                            "inchi",

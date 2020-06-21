@@ -5,7 +5,19 @@
 #'
 #' @return Provided a spectrum as a string returns a tibble and vice versa.
 #' @export
-#'
+#' @examples 
+#' chr_spec <- mona_parseSpec(atrazine_ms2) # tibble to ":" sep character
+#' tib_spec <- mona_parseSpec(chr_spec) # character to tibble
+#' \dontrun{
+#' require(MSnbase)
+#' spec <- new("Specrum2", 
+#'    mz = dplyr::pull(tib_spec, "mz"), 
+#'    intensity = dplyr::pull(tib_spec, "intensity")
+#'    )
+#' mona_parseSpec(spec) # Spectrum2 to character
+#' }
+#' 
+#' 
 mona_parseSpec <- function(spec) {
   UseMethod("mona_parseSpec")
 }

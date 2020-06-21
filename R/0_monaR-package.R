@@ -13,6 +13,8 @@ NULL
 #' @export
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
+#' @examples 
+#' 1:10 %>% print
 NULL
 
 

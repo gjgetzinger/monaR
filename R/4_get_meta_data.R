@@ -92,9 +92,12 @@ mona_getMeta.mona_id_query <-
 #' @describeIn mona_getMeta Extract meta data from spectrum query
 #' @export
 #' @examples
-#' mona_getMeta(example_spec_query, var = "category", value = "mass spectrometry")
-#' mona_getMeta(example_spec_query, var = "category", value = "chromatography")
-#' mona_getMeta(example_spec_query, var = "name", value = "mass error")
+#' mona_getMeta(example_spec_query, var = "category", value = "mass
+#' spectrometry") 
+#' mona_getMeta(example_spec_query, var = "category", value =
+#' "chromatography") 
+#' mona_getMeta(example_spec_query, var = "name", value =
+#' "mass error")
 mona_getMeta.mona_spec_query <-
   function(df,
            var = c(
