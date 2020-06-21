@@ -5,7 +5,7 @@
 #' @return Saves table as an R-object
 #' @export
 #'
-mona_identifiers <- function(update = F) {
+mona_identifiers <- function(update = FALSE) {
   if (update) {
     temp <- tempfile()
     utils::download.file(
@@ -16,6 +16,6 @@ mona_identifiers <- function(update = F) {
     mona_identifiers <-
       readr::read_csv(a, col_names = c('acession', 'splash', 'inchikey', 'smiles'))
     unlink(c(a, temp))
-    usethis::use_data(mona_identifiers, overwrite = T)
+    usethis::use_data(mona_identifiers, overwrite = TRUE)
   }
 }

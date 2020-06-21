@@ -15,6 +15,7 @@
 #'
 #' @return a [tibble][tibble::tibble-package]
 #' @export
+#' @example mona_query(query = 'ZYZCGGRZINLQBL-GWRQVWKTSA-N', from = 'InChIKey')
 #'
 mona_query <-
   function(query = NULL,
@@ -23,33 +24,32 @@ mona_query <-
            ionization = NULL,
            ms_level = NULL,
            source_introduction = NULL) {
-    from <-
-      match.arg(from,
-                c('text', 'name', 'InChIKey', 'molform', 'mass'),
-                several.ok = F)
+    from <- match.arg(from,
+                      c('text', 'name', 'InChIKey', 'molform', 'mass'),
+                      several.ok = FALSE)
     stopifnot(c(length(query) == 1, length(from) == 1))
-
     if (from == 'InChIKey') {
       stopifnot(nchar(query) %in% c(14, 27))
       if (nchar(query) == 14) {
         from <- 'partial_inchikey'
       }
     }
-
+    
     if (from == 'mass') {
-      if(is.null(mass_tol_Da)){
+      if (is.null(mass_tol_Da)) {
         stop("mass_tol_Da must be provided when searching by mass")
       }
       mass_range <- query + c(-1, 1) * mass_tol_Da
     }
-
+    
     base_url <-
       'https://mona.fiehnlab.ucdavis.edu/rest/spectra/search'
-
-    if (tolower(from) %in% c('mass', 'inchikey', 'partial_inchikey', 'molform')) {
+    
+    if (tolower(from) %in%
+        c('mass', 'inchikey', 'partial_inchikey', 'molform')) {
       base_url <- paste0(base_url, "?query=compound.metaData=q='name==")
     }
-
+    
     fmt <- switch(
       tolower(from),
       text = '?text=%s',
@@ -59,57 +59,24 @@ mona_query <-
       partial_inchikey = "\"InChIKey\" and value=match=\".*%s.*\"'",
       molform = "\"molecular formula\" and value=match=\".*%s.*\"'"
     )
-
+    
     url <-
       paste0(base_url, ifelse(
         from == 'mass',
         sprintf(fmt, mass_range[1], mass_range[2]),
         sprintf(fmt, query)
       ))
-
-    tags <- list()
-    # add ionization to query
-    if (!is.null(ionization)) {
-      ionization <-
-        match.arg(ionization, c('positive', 'negative'), several.ok = T)
-      tags['ionization'] <- paste0('(', paste(
-        sapply(ionization, sprintf, fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'"),
-        collapse = ' or '
-      ), ')')
-    }
-
-    # add ms level
-    if (!is.null(ms_level)) {
-      ms_level <-
-        match.arg(ms_level, c("MS1", "MS2", "MS3", "MS4"), several.ok = T)
-      tags['ms_level'] <- paste0('(', paste(
-        sapply(ms_level, sprintf, fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'"),
-        collapse = ' or '
-      ), ')')
-    }
-
-    # add source introduction
-    if (!is.null(source_introduction)) {
-      source_introduction <-
-        match.arg(source_introduction,
-                  c("LC-MS", "GC-MS", "CE-MS"),
-                  several.ok = T)
-      tags['source_introduction'] <- paste0('(', paste(
-        sapply(source_introduction, sprintf, fmt = "tags.text==\"%s\""),
-        collapse = ' or '
-      ), ')')
-    }
-
+    
+    tags <- get_tags(ionization, ms_level, source_introduction)
+    
     if (length(tags) > 0) {
       url <- paste(c(url, tags), collapse = ' and ')
     }
-
     url <- utils::URLencode(url)
-
-    resp <- httr::GET(url = url,  httr::timeout(getOption('timeout')))
-
+    resp <-
+      httr::GET(url = url,  httr::timeout(getOption('timeout')))
     httr::stop_for_status(resp)
-
+    
     if (resp$status_code == 200) {
       cont <- httr::content(resp, "text")
       parsed <- dplyr::as_tibble(jsonlite::fromJSON(cont))
@@ -117,14 +84,79 @@ mona_query <-
       parsed <- NA
     }
     attributes(parsed) <-
-      append(attributes(parsed),
-             list(query = query,
-                  from = from,
-                  mass_tol_Da = mass_tol_Da,
-                  ionization = ionization,
-                  ms_level = ms_level,
-                  source_introduction = source_introduction
-                  ))
+      append(
+        attributes(parsed),
+        list(
+          query = query,
+          from = from,
+          mass_tol_Da = mass_tol_Da,
+          ionization = ionization,
+          ms_level = ms_level,
+          source_introduction = source_introduction
+        )
+      )
     class(parsed) <- append('mona_id_query', class(parsed))
     return(parsed)
   }
+
+#' Get tags for query
+#'
+#' @inheritParams mona_query
+#'
+#' @return A named list of tags to add to a query
+#' @export
+#' @example get_tags(ionization = 'positive', ms_level = "all",
+#'   source_introduction = "LC-MS")
+#'   
+get_tags <- function(ionization = NULL,
+                     ms_level = NULL,
+                     source_introduction = NULL) {
+  tags <- list()
+  # add ionization to query
+  if (!is.null(ionization)) {
+    ionization <-
+      match.arg(ionization, c('positive', 'negative'), several.ok = TRUE)
+    tags['ionization'] <- paste0('(', paste(
+      vapply(
+        ionization,
+        sprintf,
+        fmt = "metaData=q='name==\"ionization mode\" and value==\"%s\"'",
+        FUN.VALUE = character(1)
+      ),
+      collapse = ' or '
+    ), ')')
+  }
+  
+  # add ms level
+  if (!is.null(ms_level)) {
+    ms_level <-
+      match.arg(ms_level, c("MS1", "MS2", "MS3", "MS4"), several.ok = TRUE)
+    tags['ms_level'] <- paste0('(', paste(
+      vapply(
+        ms_level,
+        sprintf,
+        fmt = "metaData=q='name==\"ms level\" and value==\"%s\"'",
+        FUN.VALUE = character(1)
+      ),
+      collapse = ' or '
+    ), ')')
+  }
+  
+  # add source introduction
+  if (!is.null(source_introduction)) {
+    source_introduction <-
+      match.arg(source_introduction,
+                c("LC-MS", "GC-MS", "CE-MS"),
+                several.ok = TRUE)
+    tags['source_introduction'] <- paste0('(', paste(
+      vapply(
+        source_introduction,
+        sprintf,
+        fmt = "tags.text==\"%s\"",
+        FUN.VALUE = character(1)
+      ),
+      collapse = ' or '
+    ), ')')
+  }
+  return(tags)
+}

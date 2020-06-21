@@ -4,12 +4,14 @@
 \name{atrazine_ms2}
 \alias{atrazine_ms2}
 \title{Example mass spectrum for testing.}
-\format{A tibble with 15 rows and 2 variables:
+\format{
+A tibble with 15 rows and 2 variables:
 \describe{
   \item{mz}{mass to charge values}
   \item{intensity}{absolute intensity}
   ...
-}}
+}
+}
 \source{
 splash10-00xr-1960000000-6cd3e48811e8b25a7c65
 }

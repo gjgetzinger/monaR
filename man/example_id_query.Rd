@@ -4,7 +4,9 @@
 \name{example_id_query}
 \alias{example_id_query}
 \title{Example mona_query results}
-\format{tibble with 181 rows and 13 variables}
+\format{
+tibble with 181 rows and 13 variables
+}
 \usage{
 example_id_query
 }

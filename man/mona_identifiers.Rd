@@ -4,7 +4,7 @@
 \alias{mona_identifiers}
 \title{Download the spectra identifier table from MONA}
 \usage{
-mona_identifiers(update = F)
+mona_identifiers(update = FALSE)
 }
 \arguments{
 \item{update}{(T/F) should the file be downloaded}

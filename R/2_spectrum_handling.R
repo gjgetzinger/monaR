@@ -28,9 +28,10 @@ mona_parseSpec.character <- function(spec) {
 #' @export
 mona_parseSpec.data.frame <- function(spec) {
   stopifnot('mz' %in% names(spec) &
-              ('intensity' %in% names(spec) | 'into' %in% names(spec)))
+              ('intensity' %in% names(spec) |
+                 'into' %in% names(spec)))
   dplyr::as_tibble(spec) %>%
-    dplyr::rename_all(list( ~ gsub('into', 'intensity', .))) %>%
+    dplyr::rename_all(list(~ gsub('into', 'intensity', .))) %>%
     dplyr::select(`mz`, `intensity`) %>%
     dplyr::mutate_all(as.numeric) %>%
     apply(.data,
@@ -73,7 +74,7 @@ mona_parseSpec.Spectrum2 <- function(spec) {
 #' @return A list of spectra named with the spectrum id
 #' @export
 #'
-mona_getSpec <- function(df, ann = FALSE){
+mona_getSpec <- function(df, ann = FALSE) {
   UseMethod("mona_getSpec")
 }
 
@@ -84,10 +85,12 @@ mona_getSpec <- function(df, ann = FALSE){
 #' mona_getSpec(dplyr::slice(example_id_query,150), ann = TRUE)
 #'
 mona_getSpec.mona_id_query <- function(df, ann = FALSE) {
-  spec <- stats::setNames(purrr::map(df$spectrum, mona_parseSpec), df$id)
+  spec <-
+    stats::setNames(purrr::map(df$spectrum, mona_parseSpec), df$id)
   if (ann) {
-  d <- stats::setNames(lapply(1:length(spec), function(x) {
-      if (is.null(df$annotations[[x]]) | length(df$annotations[[x]]) == 0) {
+    d <- stats::setNames(lapply(seq_along(spec), function(x) {
+      if (is.null(df$annotations[[x]]) |
+          length(df$annotations[[x]]) == 0) {
         spec[[x]]
       } else {
         dplyr::left_join(
@@ -110,14 +113,19 @@ mona_getSpec.mona_id_query <- function(df, ann = FALSE) {
 #' @export
 #' @examples
 #' mona_getSpec(dplyr::slice(example_spec_query, 1))
-#' mona_getSpec(dplyr::filter(example_spec_query, example_spec_query$hit$id == 'SM841401'))
-#' mona_getSpec(dplyr::filter(example_spec_query,example_spec_query$score > 0.8))
+#' mona_getSpec(
+#'    dplyr::filter(example_spec_query, example_spec_query$hit$id == 'SM841401')
+#'    )
+#' mona_getSpec(
+#'     dplyr::filter(example_spec_query,example_spec_query$score > 0.8)
+#'  )
 #' mona_getSpec(dplyr::slice(example_spec_query, 1), ann = TRUE)
 #'
 mona_getSpec.mona_spec_query <- function(df, ann = FALSE) {
-  spec <- stats::setNames(purrr::map(df$hit$spectrum, mona_parseSpec), df$hit$id)
+  spec <-
+    stats::setNames(purrr::map(df$hit$spectrum, mona_parseSpec), df$hit$id)
   if (ann) {
-    d <- stats::setNames(lapply(1:length(spec), function(x) {
+    d <- stats::setNames(lapply(seq_along(spec), function(x) {
       if (is.null(df$hit$annotations[[x]])) {
         spec[[x]]
       } else {
@@ -131,7 +139,7 @@ mona_getSpec.mona_spec_query <- function(df, ann = FALSE) {
       }
     }), names(spec))
   } else{
-  d <- spec
+    d <- spec
   }
   class(d) <- append('mona_meta', class(d))
   return(d)

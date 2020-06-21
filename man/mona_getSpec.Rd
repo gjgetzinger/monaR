@@ -35,8 +35,12 @@ mona_getSpec(dplyr::slice(example_id_query,1))
 mona_getSpec(dplyr::slice(example_id_query,150), ann = TRUE)
 
 mona_getSpec(dplyr::slice(example_spec_query, 1))
-mona_getSpec(dplyr::filter(example_spec_query, example_spec_query$hit$id == 'SM841401'))
-mona_getSpec(dplyr::filter(example_spec_query,example_spec_query$score > 0.8))
+mona_getSpec(
+   dplyr::filter(example_spec_query, example_spec_query$hit$id == 'SM841401')
+   )
+mona_getSpec(
+    dplyr::filter(example_spec_query,example_spec_query$score > 0.8)
+ )
 mona_getSpec(dplyr::slice(example_spec_query, 1), ann = TRUE)
 
 }

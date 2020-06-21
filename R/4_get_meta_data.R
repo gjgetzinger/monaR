@@ -50,18 +50,18 @@ mona_getMeta.mona_id_query <-
              "mass accuracy",
              "mass error"
            )) {
-    var <- match.arg(var, several.ok = F)
+    var <- match.arg(var, several.ok = FALSE)
     if (var == 'category') {
       value <-
         match.arg(
           value,
           choices = c('mass spectrometry', 'focused ion', 'chromatography'),
-          several.ok = F
+          several.ok = FALSE
         )
     } else {
-      value <- match.arg(value, several.ok = F)
+      value <- match.arg(value, several.ok = FALSE)
     }
-
+    
     d <- purrr::map(df$metaData, function(x) {
       dplyr::as_tibble(x) %>%
         dplyr::filter_at(
@@ -71,7 +71,7 @@ mona_getMeta.mona_id_query <-
     }) %>%
       stats::setNames(nm = df$id) %>%
       dplyr::bind_rows(.id = 'id') %>%
-      tidyr::unite("name", name, unit, na.rm = T) %>%
+      tidyr::unite("name", name, unit, na.rm = TRUE) %>%
       dplyr::select(id, name, value) %>%
       stats::aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
       dplyr::as_tibble() %>%
@@ -130,18 +130,18 @@ mona_getMeta.mona_spec_query <-
              "mass accuracy",
              "mass error"
            )) {
-    var <- match.arg(var, several.ok = F)
+    var <- match.arg(var, several.ok = FALSE)
     if (var == 'category') {
       value <-
         match.arg(
           value,
           choices = c('mass spectrometry', 'focused ion', 'chromatography'),
-          several.ok = F
+          several.ok = FALSE
         )
     } else {
-      value <- match.arg(value, several.ok = F)
+      value <- match.arg(value, several.ok = FALSE)
     }
-
+    
     if (var %in% c('submitter', 'splash', 'submitter', 'library', 'score')) {
       d <-
         dplyr::bind_cols(tibble::enframe(df$hit$id, name = NULL, value = 'id'),
@@ -157,7 +157,7 @@ mona_getMeta.mona_spec_query <-
       }) %>%
         stats::setNames(nm = df$hit$id) %>%
         dplyr::bind_rows(.id = 'id') %>%
-        tidyr::unite("name", name, unit, na.rm = T) %>%
+        tidyr::unite("name", name, unit, na.rm = TRUE) %>%
         dplyr::select(id, name, value) %>%
         stats::aggregate(value ~ id + name, ., paste0, collapse = ',') %>%
         dplyr::as_tibble() %>%

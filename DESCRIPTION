@@ -1,18 +1,21 @@
 Package: monaR
 Type: Package
 Title: Query the Mass Bank of North America API 
-Version: 0.1.0
-Author: Gordon Getzinger 
-Maintainer: Gordon Getzinger <gjg3@duke.edu>
+Version: 0.99.0
+Authors@R: person(
+    given = "Gordon", family = "Getzinger", 
+    email = "gjgetzinger@me.com", 
+    role = c("aut", "cre")
+    )
 Description: Provides API wrapper functions for querying Mass Bank of North 
     America. Structure identifiers or molecular properties can be used to 
     search for records in MONA. Spectral similarity searching can be used 
     to search by mass spectra with various limiters. 
-Depends: R (>= 2.10)
+Depends: R (>= 4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Imports: 
     magrittr,
     dplyr,
@@ -25,9 +28,7 @@ Imports:
     rlang,
     tibble, 
     tidyr, 
-    purrr, 
-    plyr, 
-    crayon
+    purrr
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
@@ -35,3 +36,4 @@ Suggests:
     spelling
 VignetteBuilder: knitr
 Language: en-US
+biocViews: MassSpectrometry, Software
