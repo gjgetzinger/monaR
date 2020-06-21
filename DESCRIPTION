@@ -37,3 +37,5 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 biocViews: MassSpectrometry, Software
+BugReports: https://github.com/gjgetzinger/monaR/issues
+URL: https://github.com/gjgetzinger/monaR

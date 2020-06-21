@@ -1,3 +1,3 @@
-# monaR 0.1.0
+# monaR 0.99.0
 
-* Added a `NEWS.md` file to track changes to the package.
+* Prepared initial submission to Bioconductor 

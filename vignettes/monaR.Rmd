@@ -213,3 +213,8 @@ mona_getSpec(slice(id_query_rst,150), ann = TRUE)
 ```{r}
 mona_getSpec(slice(spec_query_rst, 1), ann = TRUE)
 ```
+
+# Session info
+```{r}
+sessionInfo()
+```

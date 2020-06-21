@@ -13,7 +13,8 @@ mona_querySpec(
 )
 }
 \arguments{
-\item{spectrum}{A spectrum as either a dataframe with variables mz,intensity or a space deliminated stinrg of mz:inensity pairs.}
+\item{spectrum}{A spectrum as either a dataframe with variables mz,intensity
+or a space deliminated stinrg of mz:inensity pairs.}
 
 \item{minSimilarity}{Minimum spectral similarity for searching}
 

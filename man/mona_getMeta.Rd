@@ -56,7 +56,10 @@ mona_getMeta(example_id_query, var = "category", value = "chromatography")
 mona_getMeta(example_id_query, var = "name", value = "ionization")
 mona_getMeta(example_id_query, var = "name", value = "ms level")
 mona_getMeta(example_id_query, var = "name", value = "mass error")
-mona_getMeta(example_spec_query, var = "category", value = "mass spectrometry")
-mona_getMeta(example_spec_query, var = "category", value = "chromatography")
-mona_getMeta(example_spec_query, var = "name", value = "mass error")
+mona_getMeta(example_spec_query, var = "category", value = "mass
+spectrometry") 
+mona_getMeta(example_spec_query, var = "category", value =
+"chromatography") 
+mona_getMeta(example_spec_query, var = "name", value =
+"mass error")
 }
