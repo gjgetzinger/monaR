@@ -1,7 +1,7 @@
 Package: monaR
 Type: Package
 Title: Query the Mass Bank of North America API 
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: person(
     given = "Gordon", family = "Getzinger", 
     email = "gjgetzinger@me.com", 
