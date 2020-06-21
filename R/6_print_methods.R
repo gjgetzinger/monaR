@@ -1,4 +1,8 @@
 #' print method for id query
+#' 
+#' @param x 	an object used to select a method.
+#' @param ...  further arguments passed to or from other methods.
+#' 
 #' @export
 #' @return Prints tibble info from an ID query
 #' @examples
@@ -17,6 +21,10 @@ print.mona_id_query <- function(x, ...) {
 }
 
 #' print method for spec query
+#' 
+#' @param x 	an object used to select a method.
+#' @param ...  further arguments passed to or from other methods.
+#' 
 #' @export
 #' @return Prints tibble info from a spectrum query 
 #' @examples
@@ -42,8 +50,8 @@ print.mona_spec_query <- function(x, ...) {
 
 #' print method for meta data
 #'
-#' @param x result of mona_getMeta, mona_getChem or mona_getSpec
-#' @param ... additional arguments
+#' @param x 	an object used to select a method.
+#' @param ...  further arguments passed to or from other methods.
 #'
 #' @export
 #' @return Prints tibble info from a meta data query

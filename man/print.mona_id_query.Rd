@@ -6,6 +6,11 @@
 \usage{
 \method{print}{mona_id_query}(x, ...)
 }
+\arguments{
+\item{x}{an object used to select a method.}
+
+\item{...}{further arguments passed to or from other methods.}
+}
 \value{
 Prints tibble info from an ID query
 }

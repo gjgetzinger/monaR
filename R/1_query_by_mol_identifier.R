@@ -77,7 +77,7 @@ mona_query <-
 #' @export
 #' @examples 
 #' get_tags(
-#'    ionization = 'positive', ms_level = "all", 
+#'    ionization = 'positive', ms_level = "MS1", 
 #'    source_introduction = "LC-MS"
 #'    )
 #'

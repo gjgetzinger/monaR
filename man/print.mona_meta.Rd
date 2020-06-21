@@ -7,9 +7,9 @@
 \method{print}{mona_meta}(x, ...)
 }
 \arguments{
-\item{x}{result of mona_getMeta, mona_getChem or mona_getSpec}
+\item{x}{an object used to select a method.}
 
-\item{...}{additional arguments}
+\item{...}{further arguments passed to or from other methods.}
 }
 \value{
 Prints tibble info from a meta data query

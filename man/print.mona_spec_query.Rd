@@ -6,6 +6,11 @@
 \usage{
 \method{print}{mona_spec_query}(x, ...)
 }
+\arguments{
+\item{x}{an object used to select a method.}
+
+\item{...}{further arguments passed to or from other methods.}
+}
 \value{
 Prints tibble info from a spectrum query
 }
